@@ -1,0 +1,17 @@
+# JPGs originais: o site só usa as versões .webp
+*.jpg
+
+# Cópias duplicadas de imagens (o site usa /casas/<id>/*.webp)
+/casas/casas/
+/propriedades/casas/
+
+# Cópia solta do site dentro de /casas/
+/casas/_astro/
+/casas/en/
+/casas/fr/
+/casas/propriedades/
+/casas/index.html
+/casas/*.ico
+/casas/*.svg
+/casas/*.png
+/casas/*.webp
