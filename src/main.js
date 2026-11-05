@@ -51,16 +51,35 @@ if (langBox) {
 // ou (com boa ligação) uns segundos depois de a página abrir, para já estar pronto.
 const sheet = $('#booking');
 if (sheet && typeof sheet.showModal === 'function') {
-  const frame = $('iframe', sheet);
+  let frame = $('iframe', sheet);
   const loading = $('.sheet__loading', sheet);
   const slow = $('.sheet__slow', sheet);
   let loaded = false;
+  let used = false;
   let slowTimer;
 
   const ext = $$('.sheet__ext, .sheet__slow a', sheet);
+  const c = navigator.connection;
+  const goodNet = !c || (!c.saveData && !/2g/.test(c.effectiveType || ''));
 
-  frame.addEventListener('load', () => { loaded = true; loading.hidden = true; clearTimeout(slowTimer); });
+  const onLoad = () => { loaded = true; loading.hidden = true; clearTimeout(slowTimer); };
+  frame.addEventListener('load', onLoad);
   const start = () => { if (!frame.src) frame.src = frame.dataset.src; };
+
+  // Depois de a pessoa mexer no Amenitiz, o browser perguntava "Quer sair do site?" ao mudar de página.
+  // Ao fechar a janela troca-se o iframe por um novo: o aviso desaparece e o novo volta a carregar em fundo.
+  const reset = () => {
+    if (!used) return;
+    used = false;
+    const fresh = frame.cloneNode(false);
+    fresh.removeAttribute('src');
+    fresh.addEventListener('load', onLoad);
+    frame.replaceWith(fresh);
+    frame = fresh;
+    loaded = false; loading.hidden = false; slow.hidden = true;
+    ext.forEach((a) => { a.href = frame.dataset.src; });
+    if (goodNet) setTimeout(start, 1000);
+  };
   // Muda o endereço do Amenitiz (ex.: com datas e pessoas).
   const go = (url) => {
     if (frame.src === url) return;
@@ -73,6 +92,7 @@ if (sheet && typeof sheet.showModal === 'function') {
     if (url) go(url); else start();
     // Se demorar, mostra um botão grande para abrir o Amenitiz noutra janela.
     if (!loaded) { clearTimeout(slowTimer); slowTimer = setTimeout(() => { slow.hidden = false; }, 8000); }
+    used = true;
     sheet.showModal();
     $('.sheet__close', sheet).focus();
     // O botão "voltar" do telemóvel fecha a janela em vez de sair da página.
@@ -80,7 +100,10 @@ if (sheet && typeof sheet.showModal === 'function') {
   };
   const close = () => { if (sheet.open) sheet.close(); };
 
-  sheet.addEventListener('close', () => { if (history.state?.sheet === true) history.back(); });
+  sheet.addEventListener('close', () => {
+    reset();
+    if (history.state?.sheet === true) history.back();
+  });
   addEventListener('popstate', () => { if (history.state?.sheet !== true) close(); });
 
   document.addEventListener('click', (e) => {
@@ -106,8 +129,7 @@ if (sheet && typeof sheet.showModal === 'function') {
   });
 
   // Pré-carrega com boa ligação e sem poupança de dados.
-  const c = navigator.connection;
-  if (!c || (!c.saveData && !/2g/.test(c.effectiveType || ''))) {
+  if (goodNet) {
     addEventListener('load', () => {
       const idle = window.requestIdleCallback || ((f) => setTimeout(f, 1));
       setTimeout(() => idle(start), 3000);
