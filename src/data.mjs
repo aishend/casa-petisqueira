@@ -60,7 +60,7 @@ export const SITES = {
     out: 'dist-bungalow',
     url: 'https://bungalowserraestrela.com',
     // Publicado pelo repositório aishend/bungalow-serra-estrela (ver .github/bungalow-deploy.yml).
-    live: false, // pôr true quando bungalowserraestrela.com estiver online; até lá os links vão para o Booking.com
+    live: true,
     name: 'Bungalow Serra da Estrela',
     properties: ['bungalow-seia'],
     location: 'seia',

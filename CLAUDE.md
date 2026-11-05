@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Two static sites for Casa da Petisqueira, a short-term rental business, generated from one codebase:
 - `dist/` (casadapetisqueira.com): 3 apartments in Rebordosa, Paredes (near Porto)
-- `dist-bungalow/`: its own one-page site for the bungalow in Seia (Serra da Estrela). The domain is not chosen yet; set `SITES.bungalow.url` and `cname: true` in `src/data.mjs` once it is.
+- `dist-bungalow/`: its own one-page site for the bungalow in Seia (Serra da Estrela). It is published at bungalowserraestrela.com (`SITES.bungalow`).
 
 Both sites are in 8 languages (`LANGS`: en, pt, es, fr, de, it, nl, pl; English is the default). The owner communicates in European Portuguese, so code comments are written in pt-PT.
 
@@ -47,4 +47,4 @@ There are no tests or linter. To verify a change, build it and check the pages i
 
 ## Deploy
 
-`.github/workflows/deploy.yml` builds and deploys `dist/` to GitHub Pages on every push to `main`. The Pages source must be set to "GitHub Actions". The CNAME file is written by the build from `SITES[...].url`. The bungalow site is not deployed yet: GitHub Pages serves one site per repo, so it needs its own repo or another host once its domain is chosen. `dist/`, `dist-bungalow/` and `fotos-originais/` (the heavy originals) are git-ignored, while the optimized `static/img` files are committed.
+`.github/workflows/deploy.yml` builds and deploys `dist/` to GitHub Pages on every push to `main`. The Pages source must be set to "GitHub Actions". The CNAME file is written by the build from `SITES[...].url`. GitHub Pages serves one site per repo, so the bungalow site is deployed from the repo `aishend/bungalow-serra-estrela`. That repo only holds a workflow (copy in `.github/bungalow-deploy.yml`): it checks out this repo, builds, and publishes `dist-bungalow/`. It runs daily, so after a push that changes the bungalow site, run `gh workflow run -R aishend/bungalow-serra-estrela deploy.yml` to publish it straight away. `dist/`, `dist-bungalow/` and `fotos-originais/` (the heavy originals) are git-ignored, while the optimized `static/img` files are committed.
