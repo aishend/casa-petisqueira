@@ -462,3 +462,21 @@ body:has(.sheet[open]), body:has(.lightbox[open]) { overflow: hidden; }
 .footer__credit { padding-block: 0 1.5rem; font-size: .8rem; color: var(--muted); }
 .footer__credit a { color: inherit; }
 .picker__nights { display: flex; align-items: center; gap: .4rem; margin-top: -.15rem; font-size: .88rem; font-weight: 600; color: var(--brand); }
+
+/* também noutras plataformas: discreto, a reserva direta é o destaque */
+.also { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .9rem; margin-top: .25rem; padding-top: .7rem; border-top: 1px solid var(--line); font-size: .8rem; color: var(--muted); }
+.also a { display: inline-flex; align-items: center; gap: .3rem; min-height: 32px; color: var(--muted); text-decoration: none; }
+.also a:hover { color: var(--ink); text-decoration: underline; }
+.also .icon { width: 15px; height: 15px; }
+
+/* Serra da Estrela (site do bungalow) */
+.spots { list-style: none; margin: 0 0 2rem; padding: 0; display: grid; gap: .75rem; }
+.spot { display: grid; grid-template-columns: auto 1fr auto; gap: .9rem; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: .9rem 1rem; }
+.spot > .icon { width: 1.6rem; height: 1.6rem; color: var(--muted); }
+.spot h3 { margin: 0; font-size: 1rem; }
+.spot p { margin: .15rem 0 0; font-size: .9rem; color: var(--muted); }
+.spot__go { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.spot__go:hover { border-color: currentColor; }
+.spot__go .icon { width: 1.3rem; height: 1.3rem; }
+.spots__dist { margin: 0 0 .75rem; }
+@media (min-width: 900px) { .spots { grid-template-columns: 1fr 1fr; } }

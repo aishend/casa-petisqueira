@@ -106,6 +106,7 @@ export const REDIRECTS = {
 // id = pasta em static/img/<id>/ e chave em ROUTES.
 // guests: [pessoas em camas, pessoas em sofás-cama]
 // rooms: cama de cada quarto (double = casal, twin = duas individuais); sofas: sofás-cama na sala.
+// booking / airbnb / expedia: anúncios da casa nessas plataformas (os que faltarem não aparecem).
 // amenities: chaves de T[lang].am, pela ordem em que aparecem (as 4 primeiras vão para os cartões).
 export const PROPERTIES = [
   {
@@ -123,6 +124,8 @@ export const PROPERTIES = [
     area: 80,
     amenities: ['wifi', 'ac', 'kitchen', 'parking', 'linen', 'washer', 'dishwasher', 'tv'],
     booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira',
+    airbnb: 'https://www.airbnb.com/rooms/52890901',
+    expedia: 'https://www.expedia.com/Paredes-Hotels-Casas-Da-Petisqueira-Paredes-Oporto.h99046711.Hotel-Information',
   },
   {
     id: 'casa-88',
@@ -154,6 +157,7 @@ export const PROPERTIES = [
     area: 75,
     amenities: ['wifi', 'ac', 'kitchen', 'parking', 'balcony', 'dining', 'linen', 'washer', 'dishwasher', 'tv'],
     booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira-54-paredes-oporto',
+    expedia: 'https://www.expedia.com/Paredes-Hotels-Casa-Petisqueira-54-Paredes-Oporto.h112919038.Hotel-Information',
   },
   {
     id: 'bungalow-seia',
@@ -203,6 +207,14 @@ export const T = {
     alsoOn: 'Also on',
     place: { airport: 'Porto Airport', beach: 'Matosinhos Beach', douro: 'Douro Valley', park: 'Serra da Estrela Natural Park', spa: 'Caldas de Manteigas Spa', aerodrome: 'Viseu Aerodrome' },
     meta: { home: 'Three apartments in Rebordosa, Paredes, 25 km from Porto.', contact: 'Phone, WhatsApp, email and address of Casa da Petisqueira.', booking: 'Book at Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Holiday apartments in Rebordosa, Paredes, near Porto | Casa da Petisqueira',
+      homeDesc: 'Three entire apartments in Rebordosa, Paredes, 25 km from Porto: up to 8 guests, Wi-Fi, air conditioning, equipped kitchen and parking. Book direct.',
+      propTitle: (name, rooms) => `${name} — apartment, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: entire apartment in Rebordosa, Paredes, 25 km from Porto. ${rooms}, up to ${n} guests, Wi-Fi, air conditioning, equipped kitchen and parking.`,
+      bunTitle: 'Bungalow in Serra da Estrela, Seia — stay in a pine forest',
+      bunDesc: 'Bungalow for 2 in a pine forest in Folgosa da Madalena, Seia, 30 minutes from Serra da Estrela. Equipped kitchen, Wi-Fi and parking. Book direct.',
+    },
     contact: { title: 'Contact', phone: 'Phone', email: 'Email' },
     lightbox: { close: 'Close', prev: 'Previous', next: 'Next' },
     notFound: { title: 'Page not found', back: 'Go to home page' },
@@ -230,9 +242,17 @@ export const T = {
     kind: { apartment: 'Apartamento', bungalow: 'Bungalow' },
     waText: (name) => `Olá, gostaria de saber a disponibilidade da ${name}.`,
     sheet: { close: 'Fechar', newTab: 'Abrir em nova janela', loading: 'A carregar…', slow: 'Está a demorar?', help: 'Dúvidas?' },
-    alsoOn: 'Também no',
+    alsoOn: 'Também em',
     place: { airport: 'Aeroporto do Porto', beach: 'Praia de Matosinhos', douro: 'Vale do Douro', park: 'Parque Natural da Serra da Estrela', spa: 'Termas de Caldas de Manteigas', aerodrome: 'Aeródromo de Viseu' },
     meta: { home: 'Três apartamentos em Rebordosa, Paredes, a 25 km do Porto.', contact: 'Telefone, WhatsApp, email e morada da Casa da Petisqueira.', booking: 'Reservar na Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Alojamento local em Rebordosa, Paredes, perto do Porto | Casa da Petisqueira',
+      homeDesc: 'Três apartamentos inteiros em Rebordosa, Paredes, a 25 km do Porto: até 8 pessoas, Wi-Fi, ar condicionado, cozinha equipada e estacionamento. Reserva direta.',
+      propTitle: (name, rooms) => `${name} — apartamento, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: apartamento inteiro em Rebordosa, Paredes, a 25 km do Porto. ${rooms}, até ${n} pessoas, Wi-Fi, ar condicionado, cozinha equipada e estacionamento.`,
+      bunTitle: 'Bungalow na Serra da Estrela, Seia — alojamento num pinhal',
+      bunDesc: 'Bungalow para 2 pessoas num pinhal em Folgosa da Madalena, Seia, a 30 minutos da Serra da Estrela. Cozinha equipada, Wi-Fi e estacionamento. Reserva direta.',
+    },
     contact: { title: 'Contacto', phone: 'Telefone', email: 'Email' },
     lightbox: { close: 'Fechar', prev: 'Anterior', next: 'Seguinte' },
     notFound: { title: 'Página não encontrada', back: 'Ir para o início' },
@@ -263,6 +283,14 @@ export const T = {
     alsoOn: 'También en',
     place: { airport: 'Aeropuerto de Oporto', beach: 'Playa de Matosinhos', douro: 'Valle del Duero', park: 'Parque Natural de la Serra da Estrela', spa: 'Termas de Caldas de Manteigas', aerodrome: 'Aeródromo de Viseu' },
     meta: { home: 'Tres apartamentos en Rebordosa, Paredes, a 25 km de Oporto.', contact: 'Teléfono, WhatsApp, email y dirección de Casa da Petisqueira.', booking: 'Reservar en Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Apartamentos turísticos en Rebordosa, Paredes, cerca de Oporto | Casa da Petisqueira',
+      homeDesc: 'Tres apartamentos completos en Rebordosa, Paredes, a 25 km de Oporto: hasta 8 personas, Wi-Fi, aire acondicionado, cocina equipada y aparcamiento. Reserva directa.',
+      propTitle: (name, rooms) => `${name} — apartamento, ${rooms}, Rebordosa, Paredes (Oporto)`,
+      propDesc: (name, rooms, n) => `${name}: apartamento completo en Rebordosa, Paredes, a 25 km de Oporto. ${rooms}, hasta ${n} personas, Wi-Fi, aire acondicionado, cocina equipada y aparcamiento.`,
+      bunTitle: 'Bungalow en la Serra da Estrela, Seia — alojamiento en un pinar',
+      bunDesc: 'Bungalow para 2 personas en un pinar en Folgosa da Madalena, Seia, a 30 minutos de la Serra da Estrela. Cocina equipada, Wi-Fi y aparcamiento. Reserva directa.',
+    },
     contact: { title: 'Contacto', phone: 'Teléfono', email: 'Email' },
     lightbox: { close: 'Cerrar', prev: 'Anterior', next: 'Siguiente' },
     notFound: { title: 'Página no encontrada', back: 'Ir al inicio' },
@@ -293,6 +321,14 @@ export const T = {
     alsoOn: 'Aussi sur',
     place: { airport: 'Aéroport de Porto', beach: 'Plage de Matosinhos', douro: 'Vallée du Douro', park: 'Parc naturel de la Serra da Estrela', spa: 'Thermes de Caldas de Manteigas', aerodrome: 'Aérodrome de Viseu' },
     meta: { home: 'Trois appartements à Rebordosa, Paredes, à 25 km de Porto.', contact: 'Téléphone, WhatsApp, email et adresse de la Casa da Petisqueira.', booking: 'Réserver à la Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Appartements de vacances à Rebordosa, Paredes, près de Porto | Casa da Petisqueira',
+      homeDesc: 'Trois appartements entiers à Rebordosa, Paredes, à 25 km de Porto : jusqu’à 8 personnes, Wi-Fi, climatisation, cuisine équipée et parking. Réservation directe.',
+      propTitle: (name, rooms) => `${name} — appartement, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name} : appartement entier à Rebordosa, Paredes, à 25 km de Porto. ${rooms}, jusqu’à ${n} personnes, Wi-Fi, climatisation, cuisine équipée et parking.`,
+      bunTitle: 'Bungalow dans la Serra da Estrela, Seia — séjour dans une pinède',
+      bunDesc: 'Bungalow pour 2 personnes dans une pinède à Folgosa da Madalena, Seia, à 30 minutes de la Serra da Estrela. Cuisine équipée, Wi-Fi et parking. Réservation directe.',
+    },
     contact: { title: 'Contact', phone: 'Téléphone', email: 'Email' },
     lightbox: { close: 'Fermer', prev: 'Précédente', next: 'Suivante' },
     notFound: { title: 'Page introuvable', back: 'Aller à l’accueil' },
@@ -323,6 +359,14 @@ export const T = {
     alsoOn: 'Auch auf',
     place: { airport: 'Flughafen Porto', beach: 'Strand von Matosinhos', douro: 'Douro-Tal', park: 'Naturpark Serra da Estrela', spa: 'Thermalbad Caldas de Manteigas', aerodrome: 'Flugplatz Viseu' },
     meta: { home: 'Drei Ferienwohnungen in Rebordosa, Paredes, 25 km von Porto.', contact: 'Telefon, WhatsApp, E-Mail und Adresse der Casa da Petisqueira.', booking: 'Casa da Petisqueira buchen.' },
+    seo: {
+      homeTitle: 'Ferienwohnungen in Rebordosa, Paredes, bei Porto | Casa da Petisqueira',
+      homeDesc: 'Drei ganze Ferienwohnungen in Rebordosa, Paredes, 25 km von Porto: bis zu 8 Personen, WLAN, Klimaanlage, ausgestattete Küche und Parkplatz. Direkt buchen.',
+      propTitle: (name, rooms) => `${name} — Ferienwohnung, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: ganze Ferienwohnung in Rebordosa, Paredes, 25 km von Porto. ${rooms}, bis zu ${n} Personen, WLAN, Klimaanlage, ausgestattete Küche und Parkplatz.`,
+      bunTitle: 'Bungalow in der Serra da Estrela, Seia — Unterkunft im Kiefernwald',
+      bunDesc: 'Bungalow für 2 Personen im Kiefernwald in Folgosa da Madalena, Seia, 30 Minuten von der Serra da Estrela. Ausgestattete Küche, WLAN und Parkplatz. Direkt buchen.',
+    },
     contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-Mail' },
     lightbox: { close: 'Schließen', prev: 'Zurück', next: 'Weiter' },
     notFound: { title: 'Seite nicht gefunden', back: 'Zur Startseite' },
@@ -353,6 +397,14 @@ export const T = {
     alsoOn: 'Anche su',
     place: { airport: 'Aeroporto di Porto', beach: 'Spiaggia di Matosinhos', douro: 'Valle del Douro', park: 'Parco naturale della Serra da Estrela', spa: 'Terme di Caldas de Manteigas', aerodrome: 'Aerodromo di Viseu' },
     meta: { home: 'Tre appartamenti a Rebordosa, Paredes, a 25 km da Porto.', contact: 'Telefono, WhatsApp, email e indirizzo di Casa da Petisqueira.', booking: 'Prenota a Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Appartamenti vacanze a Rebordosa, Paredes, vicino a Porto | Casa da Petisqueira',
+      homeDesc: 'Tre appartamenti interi a Rebordosa, Paredes, a 25 km da Porto: fino a 8 persone, Wi-Fi, aria condizionata, cucina attrezzata e parcheggio. Prenotazione diretta.',
+      propTitle: (name, rooms) => `${name} — appartamento, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: appartamento intero a Rebordosa, Paredes, a 25 km da Porto. ${rooms}, fino a ${n} persone, Wi-Fi, aria condizionata, cucina attrezzata e parcheggio.`,
+      bunTitle: 'Bungalow nella Serra da Estrela, Seia — alloggio in una pineta',
+      bunDesc: 'Bungalow per 2 persone in una pineta a Folgosa da Madalena, Seia, a 30 minuti dalla Serra da Estrela. Cucina attrezzata, Wi-Fi e parcheggio. Prenotazione diretta.',
+    },
     contact: { title: 'Contatti', phone: 'Telefono', email: 'Email' },
     lightbox: { close: 'Chiudi', prev: 'Precedente', next: 'Successiva' },
     notFound: { title: 'Pagina non trovata', back: 'Vai alla home' },
@@ -383,6 +435,14 @@ export const T = {
     alsoOn: 'Ook op',
     place: { airport: 'Luchthaven Porto', beach: 'Strand van Matosinhos', douro: 'Dourovallei', park: 'Natuurpark Serra da Estrela', spa: 'Thermen van Caldas de Manteigas', aerodrome: 'Vliegveld Viseu' },
     meta: { home: 'Drie appartementen in Rebordosa, Paredes, op 25 km van Porto.', contact: 'Telefoon, WhatsApp, e-mail en adres van Casa da Petisqueira.', booking: 'Boeken bij Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Vakantieappartementen in Rebordosa, Paredes, bij Porto | Casa da Petisqueira',
+      homeDesc: 'Drie volledige appartementen in Rebordosa, Paredes, op 25 km van Porto: tot 8 personen, wifi, airconditioning, uitgeruste keuken en parkeren. Direct boeken.',
+      propTitle: (name, rooms) => `${name} — appartement, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: volledig appartement in Rebordosa, Paredes, op 25 km van Porto. ${rooms}, tot ${n} personen, wifi, airconditioning, uitgeruste keuken en parkeren.`,
+      bunTitle: 'Bungalow in de Serra da Estrela, Seia — verblijf in een dennenbos',
+      bunDesc: 'Bungalow voor 2 personen in een dennenbos in Folgosa da Madalena, Seia, op 30 minuten van de Serra da Estrela. Uitgeruste keuken, wifi en parkeren. Direct boeken.',
+    },
     contact: { title: 'Contact', phone: 'Telefoon', email: 'E-mail' },
     lightbox: { close: 'Sluiten', prev: 'Vorige', next: 'Volgende' },
     notFound: { title: 'Pagina niet gevonden', back: 'Naar de startpagina' },
@@ -413,9 +473,39 @@ export const T = {
     alsoOn: 'Także na',
     place: { airport: 'Lotnisko Porto', beach: 'Plaża Matosinhos', douro: 'Dolina Douro', park: 'Park Przyrody Serra da Estrela', spa: 'Uzdrowisko Caldas de Manteigas', aerodrome: 'Lotnisko Viseu' },
     meta: { home: 'Trzy apartamenty w Rebordosa, Paredes, 25 km od Porto.', contact: 'Telefon, WhatsApp, e-mail i adres Casa da Petisqueira.', booking: 'Rezerwacja w Casa da Petisqueira.' },
+    seo: {
+      homeTitle: 'Apartamenty wakacyjne w Rebordosa, Paredes, koło Porto | Casa da Petisqueira',
+      homeDesc: 'Trzy całe apartamenty w Rebordosa, Paredes, 25 km od Porto: do 8 osób, Wi-Fi, klimatyzacja, wyposażona kuchnia i parking. Rezerwacja bezpośrednia.',
+      propTitle: (name, rooms) => `${name} — apartament, ${rooms}, Rebordosa, Paredes (Porto)`,
+      propDesc: (name, rooms, n) => `${name}: cały apartament w Rebordosa, Paredes, 25 km od Porto. ${rooms}, do ${n} osób, Wi-Fi, klimatyzacja, wyposażona kuchnia i parking.`,
+      bunTitle: 'Bungalow w Serra da Estrela, Seia — nocleg w lesie sosnowym',
+      bunDesc: 'Bungalow dla 2 osób w lesie sosnowym w Folgosa da Madalena, Seia, 30 minut od Serra da Estrela. Wyposażona kuchnia, Wi-Fi i parking. Rezerwacja bezpośrednia.',
+    },
     contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-mail' },
     lightbox: { close: 'Zamknij', prev: 'Poprzednie', next: 'Następne' },
     notFound: { title: 'Nie znaleziono strony', back: 'Strona główna' },
     otherSite: { bungalow: 'Bungalow w Serra da Estrela', casas: 'Apartamenty koło Porto' },
   },
+};
+
+// O que visitar perto do bungalow (site do bungalow). q = pesquisa no Google Maps; icon = ícone em build.mjs.
+// Só factos conhecidos; as distâncias e o caminho vêm do Google Maps (botão "Como chegar").
+export const REGION = {
+  title: { en: 'Serra da Estrela nearby', pt: 'Serra da Estrela, aqui perto', es: 'Serra da Estrela, cerca', fr: 'La Serra da Estrela, tout près', de: 'Serra da Estrela in der Nähe', it: 'Serra da Estrela, qui vicino', nl: 'Serra da Estrela in de buurt', pl: 'Serra da Estrela w pobliżu' },
+  places: [
+    { name: 'Torre', q: 'Torre, Serra da Estrela', icon: 'mountain', t: {
+      en: 'Highest point in mainland Portugal (1993 m). Snow in winter.', pt: 'Ponto mais alto de Portugal continental (1993 m). Neve no inverno.', es: 'Punto más alto de Portugal continental (1993 m). Nieve en invierno.', fr: 'Point culminant du Portugal continental (1993 m). Neige en hiver.', de: 'Höchster Punkt des portugiesischen Festlands (1993 m). Schnee im Winter.', it: 'Punto più alto del Portogallo continentale (1993 m). Neve in inverno.', nl: 'Hoogste punt van het Portugese vasteland (1993 m). Sneeuw in de winter.', pl: 'Najwyższy punkt Portugalii kontynentalnej (1993 m). Zimą śnieg.' } },
+    { name: 'Sabugueiro', q: 'Sabugueiro, Seia', icon: 'village', t: {
+      en: 'The highest village in Portugal.', pt: 'A aldeia mais alta de Portugal.', es: 'El pueblo más alto de Portugal.', fr: 'Le village le plus haut du Portugal.', de: 'Das höchstgelegene Dorf Portugals.', it: 'Il villaggio più alto del Portogallo.', nl: 'Het hoogste dorp van Portugal.', pl: 'Najwyżej położona wieś w Portugalii.' } },
+    { name: 'Lagoa Comprida', q: 'Lagoa Comprida, Serra da Estrela', icon: 'water', t: {
+      en: 'The largest lake in Serra da Estrela.', pt: 'A maior lagoa da Serra da Estrela.', es: 'La mayor laguna de la Serra da Estrela.', fr: 'Le plus grand lac de la Serra da Estrela.', de: 'Der größte See der Serra da Estrela.', it: 'Il lago più grande della Serra da Estrela.', nl: 'Het grootste meer van de Serra da Estrela.', pl: 'Największe jezioro Serra da Estrela.' } },
+    { name: 'Vale Glaciar do Zêzere', q: 'Vale Glaciar do Zêzere, Manteigas', icon: 'mountain', t: {
+      en: 'U-shaped glacial valley between Torre and Manteigas.', pt: 'Vale glaciar em forma de U, entre a Torre e Manteigas.', es: 'Valle glaciar en forma de U, entre la Torre y Manteigas.', fr: 'Vallée glaciaire en U, entre la Torre et Manteigas.', de: 'U-förmiges Gletschertal zwischen Torre und Manteigas.', it: 'Valle glaciale a U, tra la Torre e Manteigas.', nl: 'U-vormig gletsjerdal tussen Torre en Manteigas.', pl: 'Polodowcowa dolina w kształcie litery U między Torre a Manteigas.' } },
+    { name: 'CISE', q: 'CISE Centro de Interpretação da Serra da Estrela, Seia', icon: 'museum', t: {
+      en: 'Serra da Estrela Interpretation Centre, in Seia.', pt: 'Centro de Interpretação da Serra da Estrela, em Seia.', es: 'Centro de Interpretación de la Serra da Estrela, en Seia.', fr: 'Centre d’interprétation de la Serra da Estrela, à Seia.', de: 'Informationszentrum der Serra da Estrela, in Seia.', it: 'Centro di interpretazione della Serra da Estrela, a Seia.', nl: 'Bezoekerscentrum van de Serra da Estrela, in Seia.', pl: 'Centrum informacji o Serra da Estrela, w Seia.' } },
+    { name: 'Museu do Pão', q: 'Museu do Pão, Seia', icon: 'museum', t: {
+      en: 'Bread museum, in Seia.', pt: 'Museu do pão, em Seia.', es: 'Museo del pan, en Seia.', fr: 'Musée du pain, à Seia.', de: 'Brotmuseum, in Seia.', it: 'Museo del pane, a Seia.', nl: 'Broodmuseum, in Seia.', pl: 'Muzeum chleba, w Seia.' } },
+    { name: 'Praia Fluvial de Loriga', q: 'Praia Fluvial de Loriga', icon: 'water', t: {
+      en: 'River pool in the mountains, for summer.', pt: 'Praia fluvial na montanha, para o verão.', es: 'Playa fluvial en la montaña, para el verano.', fr: 'Plage fluviale en montagne, pour l’été.', de: 'Flussbad in den Bergen, für den Sommer.', it: 'Spiaggia fluviale in montagna, per l’estate.', nl: 'Rivierstrand in de bergen, voor de zomer.', pl: 'Kąpielisko rzeczne w górach, na lato.' } },
+  ],
 };

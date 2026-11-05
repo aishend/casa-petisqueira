@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, ex
 import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE as CONTACT, LOCATIONS, LANGS, SITES, ROUTES as MAIN_ROUTES, REDIRECTS, PROPERTIES as ALL_PROPERTIES, T, googleMapsDir, wazeDir } from './data.mjs';
+import { SITE as CONTACT, LOCATIONS, LANGS, SITES, ROUTES as MAIN_ROUTES, REDIRECTS, PROPERTIES as ALL_PROPERTIES, T, REGION, googleMapsDir, wazeDir } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const STATIC = join(ROOT, 'static');
@@ -104,6 +104,11 @@ const ICON = {
   balcony: '<path d="M7 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7M3 12h18M3 21h18M5 12v9M9.5 12v9M14.5 12v9M19 12v9"/>',
   dining: '<path d="M7 2v20M4 2v5a3 3 0 0 0 6 0V2M18 22V2c-2.2 1.5-3.5 4.5-3.5 8.5H18"/>',
   forest: '<path d="M12 2 6 10h3l-4 6h14l-4-6h3zM12 16v6"/>',
+  // Serra da Estrela
+  mountain: '<path d="m3 20 6.5-11 3.5 6 2.5-4L21 20zM8 11.5l1.5 1 1.5-1"/>',
+  village: '<path d="M3 21V11l5-4 5 4v10M13 21v-7l4-3 4 3v7M2 21h20M6.5 21v-4h3v4"/>',
+  water: '<path d="M2 15c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 19.5c2 0 2-1.5 4-1.5s2 1.5 4 1.5 2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M12 3s-4 4.5-4 7a4 4 0 0 0 8 0c0-2.5-4-7-4-7z"/>',
+  museum: '<path d="M3 21h18M4 18h16M5 18v-8M9.5 18v-8M14.5 18v-8M19 18v-8M2.5 10h19L12 3z"/>',
   // camas
   double: '<path d="M3 20v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7M3 17h18M5 11V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5M7 11V8.5h4V11M13 11V8.5h4V11"/>',
   twin: '<path d="M2 20v-6a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 10 14v6M2 17.5h8M14 20v-6a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 22 14v6M14 17.5h8M4 12.5V10h4v2.5M16 12.5V10h4v2.5"/>',
@@ -119,6 +124,8 @@ const BRAND = {
   facebook: `<path fill="#0866FF" d="${PATH_FB}"/>`,
   gmaps: '<path fill="#EA4335" d="M19.527 4.799c1.212 2.608.937 5.678-.405 8.173-1.101 2.047-2.744 3.74-4.098 5.614-.619.858-1.244 1.75-1.669 2.727-.141.325-.263.658-.383.992-.121.333-.224.673-.34 1.008-.109.314-.236.684-.627.687h-.007c-.466-.001-.579-.53-.695-.887-.284-.874-.581-1.713-1.019-2.525-.51-.944-1.145-1.817-1.79-2.671L19.527 4.799zM8.545 7.705l-3.959 4.707c.724 1.54 1.821 2.863 2.871 4.18.247.31.494.622.737.936l4.984-5.925-.029.01c-1.741.601-3.691-.291-4.392-1.987a3.377 3.377 0 0 1-.209-.716c-.063-.437-.077-.761-.004-1.198l.001-.007zM5.492 3.149l-.003.004c-1.947 2.466-2.281 5.88-1.117 8.77l4.785-5.689-.058-.05-3.607-3.035zM14.661.436l-3.838 4.563a.295.295 0 0 1 .027-.01c1.6-.551 3.403.15 4.22 1.626.176.319.323.683.377 1.045.068.446.085.773.012 1.22l-.003.016 3.836-4.561A8.382 8.382 0 0 0 14.67.439l-.009-.003zM9.466 5.868L14.162.285l-.047-.012A8.31 8.31 0 0 0 11.986 0a8.439 8.439 0 0 0-6.169 2.766l-.016.018 3.665 3.084z"/>',
   waze: '<path fill="#33CCFF" d="M13.218 0C9.915 0 6.835 1.49 4.723 4.148c-1.515 1.913-2.31 4.272-2.31 6.706v1.739c0 .894-.62 1.738-1.862 1.813-.298.025-.547.224-.547.522-.05.82.82 2.31 2.012 3.502.82.844 1.788 1.515 2.832 2.036a3 3 0 0 0 2.955 3.528 2.966 2.966 0 0 0 2.931-2.385h2.509c.323 1.689 2.086 2.856 3.974 2.21 1.64-.546 2.36-2.409 1.763-3.924a12.84 12.84 0 0 0 1.838-1.465 10.73 10.73 0 0 0 3.18-7.65c0-2.882-1.118-5.589-3.155-7.625A10.899 10.899 0 0 0 13.218 0zm0 1.217c2.558 0 4.967.994 6.78 2.807a9.525 9.525 0 0 1 2.807 6.78A9.526 9.526 0 0 1 20 17.585a9.647 9.647 0 0 1-6.78 2.807h-2.46a3.008 3.008 0 0 0-2.93-2.41 3.03 3.03 0 0 0-2.534 1.367v.024a8.945 8.945 0 0 1-2.41-1.788c-.844-.844-1.316-1.614-1.515-2.11a2.858 2.858 0 0 0 1.441-.846 2.959 2.959 0 0 0 .795-2.036v-1.789c0-2.11.696-4.197 2.012-5.861 1.863-2.385 4.62-3.726 7.6-3.726zm-2.41 5.986a1.192 1.192 0 0 0-1.191 1.192 1.192 1.192 0 0 0 1.192 1.193A1.192 1.192 0 0 0 12 8.395a1.192 1.192 0 0 0-1.192-1.192zm7.204 0a1.192 1.192 0 0 0-1.192 1.192 1.192 1.192 0 0 0 1.192 1.193 1.192 1.192 0 0 0 1.192-1.193 1.192 1.192 0 0 0-1.192-1.192zm-7.377 4.769a.596.596 0 0 0-.546.845 4.813 4.813 0 0 0 4.346 2.757 4.77 4.77 0 0 0 4.347-2.757.596.596 0 0 0-.547-.845h-.025a.561.561 0 0 0-.521.348 3.59 3.59 0 0 1-3.254 2.061 3.591 3.591 0 0 1-3.254-2.061.64.64 0 0 0-.546-.348z"/>',
+  airbnb: '<path fill="#FF5A5F" d="M12.001 18.275c-1.353-1.697-2.148-3.184-2.413-4.457-.263-1.027-.16-1.848.291-2.465.477-.71 1.188-1.056 2.121-1.056s1.643.345 2.12 1.063c.446.61.558 1.432.286 2.465-.291 1.298-1.085 2.785-2.412 4.458zm9.601 1.14c-.185 1.246-1.034 2.28-2.2 2.783-2.253.98-4.483-.583-6.392-2.704 3.157-3.951 3.74-7.028 2.385-9.018-.795-1.14-1.933-1.695-3.394-1.695-2.944 0-4.563 2.49-3.927 5.382.37 1.565 1.352 3.343 2.917 5.332-.98 1.085-1.91 1.856-2.732 2.333-.636.344-1.245.558-1.828.609-2.679.399-4.778-2.2-3.825-4.88.132-.345.395-.98.845-1.961l.025-.053c1.464-3.178 3.242-6.79 5.285-10.795l.053-.132.58-1.116c.45-.822.635-1.19 1.351-1.643.346-.21.77-.315 1.246-.315.954 0 1.698.558 2.016 1.007.158.239.345.557.582.953l.558 1.089.08.159c2.041 4.004 3.821 7.608 5.279 10.794l.026.025.533 1.22.318.764c.243.613.294 1.222.213 1.858zm1.22-2.39c-.186-.583-.505-1.271-.9-2.094v-.03c-1.889-4.006-3.642-7.608-5.307-10.844l-.111-.163C15.317 1.461 14.468 0 12.001 0c-2.44 0-3.476 1.695-4.535 3.898l-.081.16c-1.669 3.236-3.421 6.843-5.303 10.847v.053l-.559 1.22c-.21.504-.317.768-.345.847C-.172 20.74 2.611 24 5.98 24c.027 0 .132 0 .265-.027h.372c1.75-.213 3.554-1.325 5.384-3.317 1.829 1.989 3.635 3.104 5.382 3.317h.372c.133.027.239.027.265.027 3.37.003 6.152-3.261 4.802-6.975z"/>',
+  expedia: '<path fill="#191E3B" d="M19.067 0H4.933A4.94 4.94 0 0 0 0 4.933v14.134A4.932 4.932 0 0 0 4.933 24h14.134A4.932 4.932 0 0 0 24 19.067V4.933C24.01 2.213 21.797 0 19.067 0ZM7.336 19.341c0 .19-.148.337-.337.337h-2.33a.333.333 0 0 1-.337-.337v-2.33c0-.189.148-.336.337-.336H7c.19 0 .337.147.337.337zm12.121-1.486-2.308 2.298c-.169.168-.422.053-.422-.2V9.57l-6.44 6.44a.533.533 0 0 1-.421.17H8.169a.32.32 0 0 1-.338-.338v-1.697c0-.2.053-.316.169-.422l6.44-6.44H4.058c-.253 0-.369-.253-.2-.421l2.297-2.309c.137-.137.285-.232.517-.232H18.15c.854 0 1.539.686 1.539 1.54v11.478c-.01.231-.095.368-.232.516z"/>',
   booking: '<rect width="24" height="24" rx="5" fill="#003B95"/><text x="5" y="18" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="16" fill="#fff">B</text><circle cx="17.8" cy="16.5" r="1.9" fill="#00A2FF"/>',
 };
 const brand = (name, cls = 'icon') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${BRAND[name]}</svg>`;
@@ -167,6 +174,17 @@ function picker(lang, max, cls = '') {
     ${step('children', t.pick.children, 0, 0)}
     <button class="btn btn--primary btn--block btn--lg" type="submit">${icon('calendar')}<span>${t.pick.go}</span></button>
   </form>`;
+}
+
+// Anúncios da casa noutras plataformas, com logótipo.
+function platforms(p, lang) {
+  const links = [
+    ['booking', 'Booking.com', SITE.bookingCom(p.booking, lang)],
+    p.airbnb && ['airbnb', 'Airbnb', p.airbnb],
+    p.expedia && ['expedia', 'Expedia', p.expedia],
+  ].filter(Boolean);
+  // Discreto de propósito: a reserva direta é o destaque.
+  return `<p class="also"><span>${T[lang].alsoOn}</span>${links.map(([k, name, href]) => `<a href="${href}" rel="noopener">${brand(k)}${name}</a>`).join('')}</p>`;
 }
 
 // Botão Booking.com com logótipo.
@@ -433,19 +451,13 @@ function homePage(lang) {
 </section>`;
 
   return layout({
-    lang, key: 'home', title: `${SITE.name} — Rebordosa, Paredes · Porto`, description: t.meta.home, body,
+    lang, key: 'home', title: t.seo.homeTitle, description: t.seo.homeDesc, body,
     preload: `<link rel="preload" as="image" imagesrcset="${srcsetOf(...HERO)}" imagesizes="${HERO_SIZES}" fetchpriority="high">`,
     jsonld: {
       '@context': 'https://schema.org',
-      '@type': 'LodgingBusiness',
-      name: SITE.name,
-      url: SITE.url + ROUTES.home[lang],
-      telephone: SITE.phoneRaw,
-      email: SITE.email,
-      image: SITE.url + imgPath(...HERO, 1920),
-      address: { '@type': 'PostalAddress', streetAddress: 'Rua de Santa Luzia 61', postalCode: '4585-447', addressLocality: 'Rebordosa, Paredes', addressRegion: 'Porto', addressCountry: 'PT' },
-      geo: { '@type': 'GeoCoordinates', latitude: LOCATIONS.porto.geo[0], longitude: LOCATIONS.porto.geo[1] },
-      sameAs: [SITE.facebook],
+      ...business(lang),
+      description: t.seo.homeDesc,
+      containsPlace: PROPERTIES.map((p) => accommodation(p, lang)),
     },
   });
 }
@@ -462,7 +474,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
   const t = T[lang];
   const total = photoCount(p.id);
   const all = Array.from({ length: total }, (_, i) => i + 1);
-  const alt = (n) => `${p.name} — ${n}/${total}`;
+  const alt = (n) => `${p.name}, ${t.kind[p.kind].toLowerCase()} — ${LOCATIONS[p.location].address} (${n}/${total})`;
   const [main, ...rest] = p.featured;
   const others = PROPERTIES.filter((o) => o.id !== p.id);
   const loc = LOCATIONS[p.location];
@@ -508,7 +520,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
         <a class="btn btn--line" href="tel:${SITE.phoneRaw}">${icon('phone', 'icon icon--sm')}${t.call}</a>
         <a class="btn btn--line" href="${waLink(t.waText(p.name))}" rel="noopener">${brand('whatsapp', 'icon icon--sm')}WhatsApp</a>
       </div>
-      ${bookingComBtn(p, lang, `${t.alsoOn} Booking.com`, 'btn btn--line btn--block book-card__bcom')}
+      ${platforms(p, lang)}
     </div>
   </aside>
 
@@ -547,23 +559,78 @@ ${standalone ? standaloneExtra(p, lang) : `<section class="section section--tint
 
   return layout({
     lang, key: standalone ? 'home' : p.id,
-    title: standalone ? `${p.name} — ${loc.address}` : `${p.name} — ${kind} · ${t.rooms(p.rooms.length)} | ${SITE.name}`,
-    description: summary,
+    title: standalone ? t.seo.bunTitle : `${t.seo.propTitle(p.name, t.rooms(p.rooms.length))} | ${SITE.name}`,
+    description: standalone ? t.seo.bunDesc : t.seo.propDesc(p.name, t.rooms(p.rooms.length), p.guests[0] + p.guests[1]),
     image: imgPath(p.id, main, 1920), body,
-    jsonld: {
-      '@context': 'https://schema.org',
-      '@type': 'Accommodation',
-      name: `${p.name} — ${SITE.name}`,
-      description: summary,
-      image: p.featured.map((n) => SITE.url + imgPath(p.id, n, 1920)),
-      numberOfRooms: p.rooms.length,
-      occupancy: { '@type': 'QuantitativeValue', maxValue: p.guests[0] + p.guests[1] },
-      amenityFeature: p.amenities.map((a) => ({ '@type': 'LocationFeatureSpecification', name: T.en.am[a], value: true })),
-      ...(p.area && { floorSize: { '@type': 'QuantitativeValue', value: p.area, unitCode: 'MTK' } }),
-      address: { '@type': 'PostalAddress', addressLocality: loc.address, addressCountry: 'PT' },
-      geo: { '@type': 'GeoCoordinates', latitude: loc.geo[0], longitude: loc.geo[1] },
-    },
+    jsonld: standalone
+      ? { '@context': 'https://schema.org', ...business(lang), description: t.seo.bunDesc, containsPlace: [accommodation(p, lang)] }
+      : {
+        '@context': 'https://schema.org',
+        '@graph': [
+          { ...accommodation(p, lang), containedInPlace: { '@id': `${SITE.url}/#business` } },
+          { ...business(lang) },
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: SITE.name, item: SITE.url + ROUTES.home[lang] },
+              { '@type': 'ListItem', position: 2, name: p.name, item: SITE.url + ROUTES[p.id][lang] },
+            ],
+          },
+        ],
+      },
   });
+}
+
+// ---------- dados estruturados (Google) ----------
+
+// O alojamento (Casa da Petisqueira ou o bungalow): morada, contactos, horas de entrada e saída.
+function business(lang) {
+  const loc = LOCATIONS[CFG.location];
+  const address = CFG.location === 'porto'
+    ? { streetAddress: 'Rua de Santa Luzia 61', postalCode: '4585-447', addressLocality: 'Rebordosa, Paredes', addressRegion: 'Porto' }
+    : { addressLocality: 'Folgosa da Madalena, Seia', addressRegion: 'Guarda' };
+  const all = [...new Set(PROPERTIES.flatMap((p) => p.amenities))];
+  return {
+    '@type': 'LodgingBusiness',
+    '@id': `${SITE.url}/#business`,
+    name: SITE.name,
+    url: SITE.url + ROUTES.home[lang],
+    telephone: SITE.phoneRaw,
+    email: SITE.email,
+    image: SITE.url + imgPath(...HERO, 1920),
+    logo: `${SITE.url}/img/logo.webp`,
+    address: { '@type': 'PostalAddress', ...address, addressCountry: 'PT' },
+    geo: { '@type': 'GeoCoordinates', latitude: loc.geo[0], longitude: loc.geo[1] },
+    hasMap: loc.maps,
+    checkinTime: '16:00',
+    checkoutTime: '11:00',
+    amenityFeature: all.map((a) => ({ '@type': 'LocationFeatureSpecification', name: T.en.am[a], value: true })),
+    sameAs: [SITE.facebook],
+  };
+}
+
+// Cada casa: quartos, camas, lotação, área e comodidades.
+function accommodation(p, lang) {
+  const t = T[lang];
+  const loc = LOCATIONS[p.location];
+  return {
+    '@type': p.kind === 'apartment' ? 'Apartment' : 'Accommodation',
+    name: p.name,
+    url: SITE.url + (ROUTES[p.id]?.[lang] ?? ROUTES.home[lang]),
+    description: p.kind === 'apartment' ? t.seo.propDesc(p.name, t.rooms(p.rooms.length), p.guests[0] + p.guests[1]) : t.seo.bunDesc,
+    image: p.featured.map((n) => SITE.url + imgPath(p.id, n, 1920)),
+    numberOfRooms: p.rooms.length,
+    numberOfBedrooms: p.rooms.length,
+    numberOfBathroomsTotal: p.bathrooms,
+    occupancy: { '@type': 'QuantitativeValue', maxValue: p.guests[0] + p.guests[1] },
+    bed: [
+      ...p.rooms.map((b) => ({ '@type': 'BedDetails', numberOfBeds: b === 'twin' ? 2 : 1, typeOfBed: b === 'twin' ? 'Single' : 'Double' })),
+      ...(p.sofas ? [{ '@type': 'BedDetails', numberOfBeds: p.sofas, typeOfBed: 'Sofa bed' }] : []),
+    ],
+    amenityFeature: p.amenities.map((a) => ({ '@type': 'LocationFeatureSpecification', name: T.en.am[a], value: true })),
+    ...(p.area && { floorSize: { '@type': 'QuantitativeValue', value: p.area, unitCode: 'MTK' } }),
+    geo: { '@type': 'GeoCoordinates', latitude: loc.geo[0], longitude: loc.geo[1] },
+  };
 }
 
 function contactList(lang) {
@@ -580,9 +647,17 @@ function contactList(lang) {
 // Distâncias e contactos no fim da página do bungalow (site próprio).
 function standaloneExtra(p, lang) {
   const t = T[lang];
-  return `<section class="section section--tint">
+  const from = LOCATIONS[p.location].geo.join(',');
+  const dir = (q) => `https://www.google.com/maps/dir/?api=1&origin=${from}&destination=${encodeURIComponent(q)}`;
+  return `<section class="section section--tint" id="serra">
   <div class="wrap">
-    <h2 class="h2">${t.distances}</h2>
+    <h2 class="h2">${REGION.title[lang]}</h2>
+    <ul class="spots">${REGION.places.map((s) => `<li class="spot">
+      ${icon(s.icon)}
+      <div><h3>${esc(s.name)}</h3><p>${esc(s.t[lang])}</p></div>
+      <a class="spot__go" href="${dir(s.q)}" rel="noopener" aria-label="${t.directions}: ${esc(s.name)}">${brand('gmaps')}</a>
+    </li>`).join('')}</ul>
+    <h2 class="h3 spots__dist">${t.distances}</h2>
     <div class="dists"><div class="dist">${distList(p.location, lang)}</div></div>
   </div>
 </section>
@@ -677,7 +752,7 @@ function buildSite(key) {
 
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${Object.keys(ROUTES).flatMap((k) => LANGS.map((l) => `  <url><loc>${SITE.url}${ROUTES[k][l]}</loc>${LANGS.map((a) => `<xhtml:link rel="alternate" hreflang="${T[a].htmlLang}" href="${SITE.url}${ROUTES[k][a]}"/>`).join('')}<xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${ROUTES[k].en}"/></url>`)).join('\n')}
+${Object.keys(ROUTES).flatMap((k) => LANGS.map((l) => `  <url><loc>${SITE.url}${ROUTES[k][l]}</loc>${LANGS.map((a) => `<xhtml:link rel="alternate" hreflang="${T[a].htmlLang}" href="${SITE.url}${ROUTES[k][a]}"/>`).join('')}<xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${ROUTES[k].en}"/><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>`)).join('\n')}
 </urlset>
 `);
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE.url}/sitemap.xml\n`);
