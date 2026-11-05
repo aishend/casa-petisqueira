@@ -56,6 +56,10 @@ const photoCount = (id) => readdirSync(join(STATIC, 'img', id)).filter((f) => f.
 const imgPath = (id, n, w) => `/img/${id}/${pad(n)}-${w}.webp`;
 
 // <img> responsivo. sizes descreve a largura no ecrã.
+// No telemóvel basta a versão média (1024 px), mesmo em ecrãs muito nítidos: carrega mais depressa.
+const HERO_SIZES = '(max-width: 767px) 340px, 100vw';
+const srcsetOf = (id, n) => WIDTHS.map((w) => `${imgPath(id, n, w)} ${webpSize(join(STATIC, imgPath(id, n, w)))[0]}w`).join(', ');
+
 function img(id, n, { alt = '', sizes = '100vw', eager = false, cls = '' } = {}) {
   const srcset = WIDTHS.map((w) => {
     const [rw] = webpSize(join(STATIC, imgPath(id, n, w)));
@@ -192,6 +196,8 @@ var a=document.querySelector('link[rel=alternate][hreflang^="'+want+'"]');
 if(a)location.replace(new URL(a.href).pathname+location.hash);
 }catch(e){}})();`.replace(/\n/g, '');
 
+const OG_LOCALE = { pt: 'pt_PT', en: 'en_GB', es: 'es_ES', fr: 'fr_FR', de: 'de_DE', it: 'it_IT', nl: 'nl_NL', pl: 'pl_PL' };
+
 // ---------- layout comum ----------
 
 // Menu de línguas: lista curta com pesquisa por língua ou país.
@@ -235,6 +241,7 @@ function layout({ lang, key, title, description, body, image, jsonld, preload = 
 <link rel="canonical" href="${SITE.url}${route}">
 ${alternates}
 <meta property="og:type" content="website">
+<meta property="og:locale" content="${OG_LOCALE[lang]}">
 <meta property="og:site_name" content="${SITE.name}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
@@ -246,6 +253,7 @@ ${alternates}
 <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/fonts/jakarta.woff2" as="font" type="font/woff2" crossorigin>
 ${preload}
 <link rel="preconnect" href="${new URL(engine).origin}">
@@ -255,7 +263,7 @@ ${ROUTES[key] ? `<script>${langScript(lang)}</script>` : ''}
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 </head>
 <body>
-<a class="skip" href="#main">Skip</a>
+<a class="skip" href="#main">${t.skip}</a>
 <header class="header">
   <div class="wrap header__inner">
     <a class="brand" href="${home}" aria-label="${SITE.name}">${IS_BUNGALOW
@@ -388,7 +396,7 @@ function homePage(lang) {
   const t = T[lang];
   const body = `
 <section class="hero">
-  ${img(...HERO, { alt: 'Rebordosa, Paredes', sizes: '100vw', eager: true, cls: 'hero__img' })}
+  ${img(...HERO, { alt: 'Rebordosa, Paredes', sizes: HERO_SIZES, eager: true, cls: 'hero__img' })}
   <div class="wrap hero__content">
     <h1 class="hero__title">${SITE.name}</h1>
     <p class="hero__text">${t.hero}</p>
@@ -426,6 +434,7 @@ function homePage(lang) {
 
   return layout({
     lang, key: 'home', title: `${SITE.name} — Rebordosa, Paredes · Porto`, description: t.meta.home, body,
+    preload: `<link rel="preload" as="image" imagesrcset="${srcsetOf(...HERO)}" imagesizes="${HERO_SIZES}" fetchpriority="high">`,
     jsonld: {
       '@context': 'https://schema.org',
       '@type': 'LodgingBusiness',
@@ -472,7 +481,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
 <div class="gallery" data-gallery='${JSON.stringify(gallery)}'>
   <div class="carousel">
     <div class="carousel__track">
-      ${order.map((n, i) => `<button class="carousel__item" data-open="${i}">${img(p.id, n, { alt: alt(n), sizes: '(min-width: 768px) 1px, 100vw', eager: i === 0 })}</button>`).join('')}
+      ${order.map((n, i) => `<button class="carousel__item" data-open="${i}">${img(p.id, n, { alt: alt(n), sizes: `(min-width: 768px) 1px, ${i === 0 ? '340px' : '100vw'}`, eager: i === 0 })}</button>`).join('')}
     </div>
     <span class="carousel__count" aria-hidden="true"><span data-count>1</span> / ${total}</span>
   </div>
@@ -667,12 +676,13 @@ function buildSite(key) {
   write('404.html', notFoundPage());
 
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${Object.keys(ROUTES).flatMap((k) => LANGS.map((l) => `  <url><loc>${SITE.url}${ROUTES[k][l]}</loc>${LANGS.map((a) => `<xhtml:link rel="alternate" hreflang="${T[a].htmlLang}" href="${SITE.url}${ROUTES[k][a]}"/>`).join('')}<xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${ROUTES[k].en}"/></url>`)).join('\n')}
 </urlset>
 `);
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE.url}/sitemap.xml\n`);
   write('.nojekyll', '');
+  write('site.webmanifest', JSON.stringify({ name: SITE.name, short_name: SITE.name, start_url: '/', display: 'browser', background_color: '#faf7f3', theme_color: '#7d2632', icons: [{ src: '/favicon-192.png', sizes: '192x192', type: 'image/png' }] }));
   if (CFG.cname !== false) write('CNAME', new URL(SITE.url).hostname + '\n');
 
   console.log(`✓ ${CFG.out}/: ${urls.length} páginas + ${Object.keys(redirects).length} redirecionamentos`);

@@ -461,4 +461,4 @@ body:has(.sheet[open]), body:has(.lightbox[open]) { overflow: hidden; }
 
 .footer__credit { padding-block: 0 1.5rem; font-size: .8rem; color: var(--muted); }
 .footer__credit a { color: inherit; }
-.picker__nights { margin-top: -.15rem; font-size: .88rem; font-weight: 600; color: var(--brand); }
+.picker__nights { display: flex; align-items: center; gap: .4rem; margin-top: -.15rem; font-size: .88rem; font-weight: 600; color: var(--brand); }

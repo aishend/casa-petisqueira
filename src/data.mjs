@@ -180,6 +180,7 @@ const plPL = (one, few, many) => (n) => `${n} ${n === 1 ? one : n % 10 >= 2 && n
 export const T = {
   en: {
     htmlLang: 'en', langName: 'English',
+    skip: 'Skip to content',
     terms: 'english inglês inglés anglais englisch inglese engels angielski uk united kingdom england usa united states america ireland canada australia new zealand india south africa reino unido inglaterra estados unidos eua irlanda austrália royaume-uni angleterre etats-unis vereinigtes königreich england grossbritannien regno unito inghilterra verenigd koninkrijk engeland wielka brytania anglia',
     search: 'Language or country', menu: 'Menu', noLang: 'Not listed? Use English.',
     nav: { houses: 'Houses', location: 'Location', contact: 'Contact' },
@@ -209,6 +210,7 @@ export const T = {
   },
   pt: {
     htmlLang: 'pt-PT', langName: 'Português',
+    skip: 'Saltar para o conteúdo',
     terms: 'portuguese portugués portugais portugiesisch portoghese portugees portugalski portugal brasil brazil angola moçambique mozambique cabo verde portogallo portugalia brasile brésil brasilien brazilië brazylia',
     search: 'Língua ou país', menu: 'Menu', noLang: 'Não encontra? Use inglês.',
     nav: { houses: 'Casas', location: 'Localização', contact: 'Contacto' },
@@ -238,6 +240,7 @@ export const T = {
   },
   es: {
     htmlLang: 'es', langName: 'Español',
+    skip: 'Saltar al contenido',
     terms: 'spanish espanhol espagnol spanisch spagnolo spaans hiszpański españa espana spain mexico méxico argentina colombia chile peru perú venezuela uruguay ecuador cuba espanha espagne spanien spagna spanje hiszpania méxico mexique mexiko messico meksyk',
     search: 'Idioma o país', menu: 'Menú', noLang: '¿No está? Use inglés.',
     nav: { houses: 'Casas', location: 'Ubicación', contact: 'Contacto' },
@@ -267,6 +270,7 @@ export const T = {
   },
   fr: {
     htmlLang: 'fr', langName: 'Français',
+    skip: 'Aller au contenu',
     terms: 'french francês francés französisch francese frans francuski france belgique belgium suisse switzerland luxembourg canada québec quebec monaco sénégal maroc morocco algérie tunisie frança francia frankreich frankrijk francja bélgica belgica belgien belgio belgia suíça suiza suisse schweiz svizzera zwitserland szwajcaria',
     search: 'Langue ou pays', menu: 'Menu', noLang: 'Absente ? Utilisez l’anglais.',
     nav: { houses: 'Maisons', location: 'Localisation', contact: 'Contact' },
@@ -296,6 +300,7 @@ export const T = {
   },
   de: {
     htmlLang: 'de', langName: 'Deutsch',
+    skip: 'Zum Inhalt',
     terms: 'german alemão alemán allemand tedesco duits niemiecki deutschland germany österreich osterreich austria schweiz switzerland liechtenstein alemanha alemania allemagne germania duitsland niemcy áustria autriche oostenrijk austria suíça suiza suisse svizzera zwitserland szwajcaria',
     search: 'Sprache oder Land', menu: 'Menü', noLang: 'Nicht dabei? Englisch wählen.',
     nav: { houses: 'Häuser', location: 'Lage', contact: 'Kontakt' },
@@ -325,6 +330,7 @@ export const T = {
   },
   it: {
     htmlLang: 'it', langName: 'Italiano',
+    skip: 'Vai al contenuto',
     terms: 'italian italiano italien italienisch italiaans włoski italia italy svizzera switzerland san marino itália italie italien italië włochy suíça suiza suisse schweiz zwitserland szwajcaria',
     search: 'Lingua o paese', menu: 'Menu', noLang: 'Non c’è? Usa l’inglese.',
     nav: { houses: 'Case', location: 'Posizione', contact: 'Contatti' },
@@ -354,6 +360,7 @@ export const T = {
   },
   nl: {
     htmlLang: 'nl', langName: 'Nederlands',
+    skip: 'Naar inhoud',
     terms: 'dutch holandês neerlandés néerlandais niederländisch olandese niderlandzki nederland netherlands holland belgië belgie belgium vlaanderen flanders suriname holanda países baixos paises bajos pays-bas niederlande paesi bassi holandia bélgica belgica belgique belgien belgio belgia',
     search: 'Taal of land', menu: 'Menu', noLang: 'Niet gevonden? Kies Engels.',
     nav: { houses: 'Huizen', location: 'Ligging', contact: 'Contact' },
@@ -383,6 +390,7 @@ export const T = {
   },
   pl: {
     htmlLang: 'pl', langName: 'Polski',
+    skip: 'Przejdź do treści',
     terms: 'polish polaco polonais polnisch polacco pools polska poland polónia polonia pologne polen',
     search: 'Język lub kraj', menu: 'Menu', noLang: 'Brak języka? Wybierz angielski.',
     nav: { houses: 'Domy', location: 'Lokalizacja', contact: 'Kontakt' },
