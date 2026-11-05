@@ -1,0 +1,403 @@
+// Conteúdo do site: contactos, casas e textos em 8 línguas.
+// Para mudar um texto, edite aqui e corra `npm run build`.
+
+// Línguas do site, pela ordem do menu. A primeira visita escolhe a do telemóvel/computador; senão inglês.
+export const LANGS = ['en', 'pt', 'es', 'fr', 'de', 'it', 'nl', 'pl'];
+
+// Sufixo de língua das páginas do Booking.com.
+const BOOKING_LANG = { pt: 'pt-pt', en: 'en-gb', es: 'es', fr: 'fr', de: 'de', it: 'it', nl: 'nl', pl: 'pl' };
+
+export const SITE = {
+  url: 'https://casadapetisqueira.com',
+  name: 'Casa da Petisqueira',
+  phone: '+351 919 425 125',
+  phoneRaw: '+351919425125',
+  whatsapp: '351919425125',
+  email: 'casadapetisqueira@gmail.com',
+  facebook: 'https://www.facebook.com/people/Casa-da-Petisqueira/100085431469542/',
+  // Sem datas abre no passo de escolher datas e pessoas (#DatesGuests-BE).
+  // Com ?start_date=AAAA-MM-DD&end_date=…&adults=N&children=N abre logo a lista de casas com preços (#RoomSelection-BE).
+  bookingEngineBase: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room`,
+  bookingEngine: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room#DatesGuests-BE`,
+  bookingCom: (base, lang) => `${base}.${BOOKING_LANG[lang] ?? 'en-gb'}.html`,
+};
+
+export const LOCATIONS = {
+  porto: {
+    maps: 'https://maps.app.goo.gl/DUYhV2oWHg5ivuF38',
+    embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d376.62!2d-8.40183881592977!3d41.22728451380961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd248b27ad9c5cff%3A0xb9b17e1838074910!2sCasa+Da+Petisqueira!5e0!3m2!1spt!2spt!4v1749587958000!5m2!1spt!2spt',
+    geo: [41.22728451380961, -8.40183881592977],
+    address: 'Rebordosa, Paredes, Porto',
+    // [km, chave em T[lang].place ou nome próprio]
+    distances: [[20, 'Amarante'], [25, 'Porto'], [30, 'airport'], [45, 'beach'], [60, 'douro']],
+  },
+  seia: {
+    maps: 'https://maps.app.goo.gl/FHEMChCHV4iTKqAZA',
+    embed: 'https://maps.google.com/maps?q=40.41847021539861,-7.7550886249468025&z=13&output=embed',
+    geo: [40.41847021539861, -7.7550886249468025],
+    address: 'Folgosa da Madalena, Seia, Serra da Estrela',
+    distances: [[32, 'park'], [33, 'Live Beach Mangualde'], [35, 'spa'], [52, 'aerodrome']],
+  },
+};
+
+// Links de navegação (abrem a app no telemóvel).
+export const googleMapsDir = ([lat, lng]) => `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+export const wazeDir = ([lat, lng]) => `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+
+// Os dois sites gerados. Mudar `url` quando o domínio do bungalow estiver escolhido.
+export const SITES = {
+  casas: {
+    out: 'dist',
+    url: 'https://casadapetisqueira.com',
+    name: 'Casa da Petisqueira',
+    properties: ['casa-61', 'casa-88', 'casa-54'],
+    location: 'porto',
+    hero: ['casa-61', 45],
+  },
+  bungalow: {
+    out: 'dist-bungalow',
+    url: 'https://bungalow.casadapetisqueira.com', // provisório
+    cname: false, // pôr true quando o domínio estiver configurado
+    live: false, // pôr true quando o site do bungalow estiver publicado; até lá os links vão para o Booking.com
+    name: 'Bungalow Serra da Estrela',
+    properties: ['bungalow-seia'],
+    location: 'seia',
+    hero: ['bungalow-seia', 40],
+  },
+};
+
+// Partes dos URLs em cada língua: [início, contacto, reservar, casas, casa]. pt/en/fr mantêm os URLs do site antigo.
+const SLUGS = {
+  pt: ['/', 'contacto', 'reservar', 'propriedades', 'apartamento'],
+  en: ['/en/', 'contact', 'booking', 'properties', 'house'],
+  es: ['/es/', 'contacto', 'reservar', 'alojamientos', 'casa'],
+  fr: ['/fr/', 'contact', 'reserver', 'proprietes', 'maison'],
+  de: ['/de/', 'kontakt', 'buchen', 'unterkuenfte', 'haus'],
+  it: ['/it/', 'contatti', 'prenota', 'alloggi', 'casa'],
+  nl: ['/nl/', 'contact', 'boeken', 'accommodaties', 'huis'],
+  pl: ['/pl/', 'kontakt', 'rezerwacja', 'obiekty', 'dom'],
+};
+const route = (fn) => Object.fromEntries(LANGS.map((l) => [l, fn(...SLUGS[l])]));
+
+// Caminho de cada página em cada língua.
+export const ROUTES = {
+  home: route((b) => b),
+  contact: route((b, c) => `${b}${c}/`),
+  booking: route((b, c, r) => `${b}${r}/`),
+  ...Object.fromEntries(['61', '88', '54'].map((n) => [`casa-${n}`, route((b, c, r, p, h) => `${b}${p}/${h}-${n}/`)])),
+};
+
+// URLs antigos que deixaram de ser páginas próprias -> para onde redirecionam.
+export const REDIRECTS = {
+  // O bungalow tem agora site próprio
+  '/propriedades/contentor-seia/':     'BUNGALOW:/',
+  '/en/properties/contentor-seia/':   'BUNGALOW:/en/',
+  '/fr/proprietes/contentor-seia/':   'BUNGALOW:/fr/',
+  '/propriedades/':    '/#casas',
+  '/sobre/':           '/',
+  '/en/properties/':   '/en/#casas',
+  '/en/about/':        '/en/',
+  '/fr/proprietes/':   '/fr/#casas',
+  '/fr/a-propos/':     '/fr/',
+};
+
+// id = pasta em static/img/<id>/ e chave em ROUTES.
+// guests: [pessoas em camas, pessoas em sofás-cama]
+// rooms: cama de cada quarto (double = casal, twin = duas individuais); sofas: sofás-cama na sala.
+// amenities: chaves de T[lang].am, pela ordem em que aparecem (as 4 primeiras vão para os cartões).
+export const PROPERTIES = [
+  {
+    id: 'casa-61',
+    amenitiz: 62916, // id do quarto no Amenitiz
+    name: 'Casa 61',
+    kind: 'apartment',
+    location: 'porto',
+    featured: [35, 1, 25, 3, 46], // capa + 4 fotos em destaque (nº do ficheiro)
+    video: 'casa-61',
+    guests: [6, 2],
+    rooms: ['double', 'double', 'twin'],
+    sofas: 2,
+    bathrooms: 1,
+    area: 80,
+    amenities: ['wifi', 'ac', 'kitchen', 'parking', 'linen', 'washer', 'dishwasher', 'tv'],
+    booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira',
+  },
+  {
+    id: 'casa-88',
+    amenitiz: 62917, // id do quarto no Amenitiz
+    name: 'Casa 88',
+    kind: 'apartment',
+    location: 'porto',
+    featured: [14, 3, 17, 23, 24],
+    video: 'casa-88',
+    guests: [4, 2],
+    rooms: ['double', 'twin'],
+    sofas: 2,
+    bathrooms: 1,
+    area: 75,
+    amenities: ['wifi', 'ac', 'kitchen', 'parking', 'terrace', 'linen', 'washer', 'dishwasher', 'tv'],
+    booking: 'https://www.booking.com/hotel/pt/casa-petisqueira-88-paredes-oporto',
+  },
+  {
+    id: 'casa-54',
+    amenitiz: 117371, // id do quarto no Amenitiz
+    name: 'Casa 54',
+    kind: 'apartment',
+    location: 'porto',
+    featured: [5, 7, 25, 4, 34],
+    guests: [4, 2],
+    rooms: ['double', 'twin'],
+    sofas: 2,
+    bathrooms: 1,
+    area: 75,
+    amenities: ['wifi', 'ac', 'kitchen', 'parking', 'balcony', 'dining', 'linen', 'washer', 'dishwasher', 'tv'],
+    booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira-54-paredes-oporto',
+  },
+  {
+    id: 'bungalow-seia',
+    amenitiz: 140762, // id do quarto no Amenitiz
+    name: 'Bungalow Serra da Estrela',
+    kind: 'bungalow',
+    location: 'seia',
+    featured: [40, 1, 7, 9, 49],
+    guests: [2, 0],
+    rooms: ['double'],
+    sofas: 0,
+    bathrooms: 1,
+    amenities: ['wifi', 'kitchen', 'parking', 'forest', 'linen', 'tv'],
+    booking: 'https://www.booking.com/hotel/pt/eco-bungalow-com-vista-serra-da-estrela-pinhal',
+  },
+];
+
+// Plural simples (1 / vários).
+const pl = (one, many) => (n) => `${n} ${n === 1 ? one : many}`;
+// Polaco: 1 / 2–4 / 5+.
+const plPL = (one, few, many) => (n) => `${n} ${n === 1 ? one : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? few : many}`;
+
+// Textos da interface. `terms`: palavras extra para a pesquisa de língua (nome noutras línguas, países).
+export const T = {
+  en: {
+    htmlLang: 'en', langName: 'English',
+    terms: 'english inglês inglés anglais englisch inglese engels angielski uk united kingdom england usa united states america ireland canada australia new zealand india south africa reino unido inglaterra estados unidos eua irlanda austrália royaume-uni angleterre etats-unis vereinigtes königreich england grossbritannien regno unito inghilterra verenigd koninkrijk engeland wielka brytania anglia',
+    search: 'Language or country', menu: 'Menu', noLang: 'Not listed? Use English.',
+    nav: { houses: 'Houses', location: 'Location', contact: 'Contact' },
+    book: 'Book', call: 'Call',
+    mapShort: 'Directions',
+    pick: { checkin: 'Check-in', checkout: 'Check-out', adults: 'Adults', children: 'Children', go: 'See prices' },
+    rights: 'All rights reserved',
+    hero: 'Three apartments in Rebordosa, Paredes, 25 km from Porto.',
+    phoneLabel: 'Bookings by phone',
+    directions: 'Getting here', houses: 'Houses', distances: 'Distances', others: 'Other houses',
+    photos: (n) => `${n} photos`,
+    guests: 'guests', rooms: pl('bedroom', 'bedrooms'), baths: pl('bathroom', 'bathrooms'),
+    beds: 'Beds', room: (n) => `Bedroom ${n}`, living: 'Living room', amenities: 'Included', video: 'Video',
+    bed: { double: 'Double bed', twin: '2 single beds', sofa: 'Sofa bed' },
+    am: { wifi: 'Wi-Fi', ac: 'Air conditioning', kitchen: 'Equipped kitchen', parking: 'Parking', linen: 'Bed linen & towels', washer: 'Washing machine', dishwasher: 'Dishwasher', tv: 'TV', terrace: 'Terrace', balcony: 'Balcony', dining: 'Dining room', forest: 'Pine forest' },
+    kind: { apartment: 'Apartment', bungalow: 'Bungalow' },
+    waText: (name) => `Hello, I would like to check availability for ${name}.`,
+    sheet: { close: 'Close', newTab: 'Open in new window', loading: 'Loading…', slow: 'Taking too long?', help: 'Questions?' },
+    alsoOn: 'Also on',
+    place: { airport: 'Porto Airport', beach: 'Matosinhos Beach', douro: 'Douro Valley', park: 'Serra da Estrela Natural Park', spa: 'Caldas de Manteigas Spa', aerodrome: 'Viseu Aerodrome' },
+    meta: { home: 'Three apartments in Rebordosa, Paredes, 25 km from Porto.', contact: 'Phone, WhatsApp, email and address of Casa da Petisqueira.', booking: 'Book at Casa da Petisqueira.' },
+    contact: { title: 'Contact', phone: 'Phone', email: 'Email' },
+    lightbox: { close: 'Close', prev: 'Previous', next: 'Next' },
+    notFound: { title: 'Page not found', back: 'Go to home page' },
+    otherSite: { bungalow: 'Bungalow in Serra da Estrela', casas: 'Apartments near Porto' },
+  },
+  pt: {
+    htmlLang: 'pt-PT', langName: 'Português',
+    terms: 'portuguese portugués portugais portugiesisch portoghese portugees portugalski portugal brasil brazil angola moçambique mozambique cabo verde portogallo portugalia brasile brésil brasilien brazilië brazylia',
+    search: 'Língua ou país', menu: 'Menu', noLang: 'Não encontra? Use inglês.',
+    nav: { houses: 'Casas', location: 'Localização', contact: 'Contacto' },
+    book: 'Reservar', call: 'Ligar',
+    mapShort: 'Como chegar',
+    pick: { checkin: 'Chegada', checkout: 'Saída', adults: 'Adultos', children: 'Crianças', go: 'Ver preços' },
+    rights: 'Todos os direitos reservados',
+    hero: 'Três apartamentos em Rebordosa, Paredes, a 25 km do Porto.',
+    phoneLabel: 'Reservas por telefone',
+    directions: 'Como chegar', houses: 'Casas', distances: 'Distâncias', others: 'Outras casas',
+    photos: (n) => `${n} fotos`,
+    guests: 'hóspedes', rooms: pl('quarto', 'quartos'), baths: pl('casa de banho', 'casas de banho'),
+    beds: 'Camas', room: (n) => `Quarto ${n}`, living: 'Sala', amenities: 'Inclui', video: 'Vídeo',
+    bed: { double: 'Cama de casal', twin: '2 camas individuais', sofa: 'Sofá-cama' },
+    am: { wifi: 'Wi-Fi', ac: 'Ar condicionado', kitchen: 'Cozinha equipada', parking: 'Estacionamento', linen: 'Roupa de cama e toalhas', washer: 'Máquina de lavar roupa', dishwasher: 'Máquina de lavar loiça', tv: 'TV', terrace: 'Terraço', balcony: 'Varanda', dining: 'Sala de jantar', forest: 'Pinhal' },
+    kind: { apartment: 'Apartamento', bungalow: 'Bungalow' },
+    waText: (name) => `Olá, gostaria de saber a disponibilidade da ${name}.`,
+    sheet: { close: 'Fechar', newTab: 'Abrir em nova janela', loading: 'A carregar…', slow: 'Está a demorar?', help: 'Dúvidas?' },
+    alsoOn: 'Também no',
+    place: { airport: 'Aeroporto do Porto', beach: 'Praia de Matosinhos', douro: 'Vale do Douro', park: 'Parque Natural da Serra da Estrela', spa: 'Termas de Caldas de Manteigas', aerodrome: 'Aeródromo de Viseu' },
+    meta: { home: 'Três apartamentos em Rebordosa, Paredes, a 25 km do Porto.', contact: 'Telefone, WhatsApp, email e morada da Casa da Petisqueira.', booking: 'Reservar na Casa da Petisqueira.' },
+    contact: { title: 'Contacto', phone: 'Telefone', email: 'Email' },
+    lightbox: { close: 'Fechar', prev: 'Anterior', next: 'Seguinte' },
+    notFound: { title: 'Página não encontrada', back: 'Ir para o início' },
+    otherSite: { bungalow: 'Bungalow na Serra da Estrela', casas: 'Apartamentos perto do Porto' },
+  },
+  es: {
+    htmlLang: 'es', langName: 'Español',
+    terms: 'spanish espanhol espagnol spanisch spagnolo spaans hiszpański españa espana spain mexico méxico argentina colombia chile peru perú venezuela uruguay ecuador cuba espanha espagne spanien spagna spanje hiszpania méxico mexique mexiko messico meksyk',
+    search: 'Idioma o país', menu: 'Menú', noLang: '¿No está? Use inglés.',
+    nav: { houses: 'Casas', location: 'Ubicación', contact: 'Contacto' },
+    book: 'Reservar', call: 'Llamar',
+    mapShort: 'Cómo llegar',
+    pick: { checkin: 'Llegada', checkout: 'Salida', adults: 'Adultos', children: 'Niños', go: 'Ver precios' },
+    rights: 'Todos los derechos reservados',
+    hero: 'Tres apartamentos en Rebordosa, Paredes, a 25 km de Oporto.',
+    phoneLabel: 'Reservas por teléfono',
+    directions: 'Cómo llegar', houses: 'Casas', distances: 'Distancias', others: 'Otras casas',
+    photos: (n) => `${n} fotos`,
+    guests: 'huéspedes', rooms: pl('dormitorio', 'dormitorios'), baths: pl('baño', 'baños'),
+    beds: 'Camas', room: (n) => `Dormitorio ${n}`, living: 'Salón', amenities: 'Incluye', video: 'Vídeo',
+    bed: { double: 'Cama de matrimonio', twin: '2 camas individuales', sofa: 'Sofá cama' },
+    am: { wifi: 'Wi-Fi', ac: 'Aire acondicionado', kitchen: 'Cocina equipada', parking: 'Aparcamiento', linen: 'Ropa de cama y toallas', washer: 'Lavadora', dishwasher: 'Lavavajillas', tv: 'TV', terrace: 'Terraza', balcony: 'Balcón', dining: 'Comedor', forest: 'Pinar' },
+    kind: { apartment: 'Apartamento', bungalow: 'Bungalow' },
+    waText: (name) => `Hola, me gustaría saber la disponibilidad de ${name}.`,
+    sheet: { close: 'Cerrar', newTab: 'Abrir en otra ventana', loading: 'Cargando…', slow: '¿Tarda demasiado?', help: '¿Dudas?' },
+    alsoOn: 'También en',
+    place: { airport: 'Aeropuerto de Oporto', beach: 'Playa de Matosinhos', douro: 'Valle del Duero', park: 'Parque Natural de la Serra da Estrela', spa: 'Termas de Caldas de Manteigas', aerodrome: 'Aeródromo de Viseu' },
+    meta: { home: 'Tres apartamentos en Rebordosa, Paredes, a 25 km de Oporto.', contact: 'Teléfono, WhatsApp, email y dirección de Casa da Petisqueira.', booking: 'Reservar en Casa da Petisqueira.' },
+    contact: { title: 'Contacto', phone: 'Teléfono', email: 'Email' },
+    lightbox: { close: 'Cerrar', prev: 'Anterior', next: 'Siguiente' },
+    notFound: { title: 'Página no encontrada', back: 'Ir al inicio' },
+    otherSite: { bungalow: 'Bungalow en la Serra da Estrela', casas: 'Apartamentos cerca de Oporto' },
+  },
+  fr: {
+    htmlLang: 'fr', langName: 'Français',
+    terms: 'french francês francés französisch francese frans francuski france belgique belgium suisse switzerland luxembourg canada québec quebec monaco sénégal maroc morocco algérie tunisie frança francia frankreich frankrijk francja bélgica belgica belgien belgio belgia suíça suiza suisse schweiz svizzera zwitserland szwajcaria',
+    search: 'Langue ou pays', menu: 'Menu', noLang: 'Absente ? Utilisez l’anglais.',
+    nav: { houses: 'Maisons', location: 'Localisation', contact: 'Contact' },
+    book: 'Réserver', call: 'Appeler',
+    mapShort: 'Itinéraire',
+    pick: { checkin: 'Arrivée', checkout: 'Départ', adults: 'Adultes', children: 'Enfants', go: 'Voir les prix' },
+    rights: 'Tous droits réservés',
+    hero: 'Trois appartements à Rebordosa, Paredes, à 25 km de Porto.',
+    phoneLabel: 'Réservations par téléphone',
+    directions: 'Comment venir', houses: 'Maisons', distances: 'Distances', others: 'Autres maisons',
+    photos: (n) => `${n} photos`,
+    guests: 'personnes', rooms: pl('chambre', 'chambres'), baths: pl('salle de bain', 'salles de bain'),
+    beds: 'Lits', room: (n) => `Chambre ${n}`, living: 'Salon', amenities: 'Inclus', video: 'Vidéo',
+    bed: { double: 'Lit double', twin: '2 lits simples', sofa: 'Canapé-lit' },
+    am: { wifi: 'Wi-Fi', ac: 'Climatisation', kitchen: 'Cuisine équipée', parking: 'Parking', linen: 'Linge de lit et serviettes', washer: 'Lave-linge', dishwasher: 'Lave-vaisselle', tv: 'TV', terrace: 'Terrasse', balcony: 'Balcon', dining: 'Salle à manger', forest: 'Pinède' },
+    kind: { apartment: 'Appartement', bungalow: 'Bungalow' },
+    waText: (name) => `Bonjour, j’aimerais connaître les disponibilités de ${name}.`,
+    sheet: { close: 'Fermer', newTab: 'Ouvrir dans une nouvelle fenêtre', loading: 'Chargement…', slow: 'Trop long ?', help: 'Questions ?' },
+    alsoOn: 'Aussi sur',
+    place: { airport: 'Aéroport de Porto', beach: 'Plage de Matosinhos', douro: 'Vallée du Douro', park: 'Parc naturel de la Serra da Estrela', spa: 'Thermes de Caldas de Manteigas', aerodrome: 'Aérodrome de Viseu' },
+    meta: { home: 'Trois appartements à Rebordosa, Paredes, à 25 km de Porto.', contact: 'Téléphone, WhatsApp, email et adresse de la Casa da Petisqueira.', booking: 'Réserver à la Casa da Petisqueira.' },
+    contact: { title: 'Contact', phone: 'Téléphone', email: 'Email' },
+    lightbox: { close: 'Fermer', prev: 'Précédente', next: 'Suivante' },
+    notFound: { title: 'Page introuvable', back: 'Aller à l’accueil' },
+    otherSite: { bungalow: 'Bungalow dans la Serra da Estrela', casas: 'Appartements près de Porto' },
+  },
+  de: {
+    htmlLang: 'de', langName: 'Deutsch',
+    terms: 'german alemão alemán allemand tedesco duits niemiecki deutschland germany österreich osterreich austria schweiz switzerland liechtenstein alemanha alemania allemagne germania duitsland niemcy áustria autriche oostenrijk austria suíça suiza suisse svizzera zwitserland szwajcaria',
+    search: 'Sprache oder Land', menu: 'Menü', noLang: 'Nicht dabei? Englisch wählen.',
+    nav: { houses: 'Häuser', location: 'Lage', contact: 'Kontakt' },
+    book: 'Buchen', call: 'Anrufen',
+    mapShort: 'Route',
+    pick: { checkin: 'Anreise', checkout: 'Abreise', adults: 'Erwachsene', children: 'Kinder', go: 'Preise ansehen' },
+    rights: 'Alle Rechte vorbehalten',
+    hero: 'Drei Ferienwohnungen in Rebordosa, Paredes, 25 km von Porto.',
+    phoneLabel: 'Buchung per Telefon',
+    directions: 'Anfahrt', houses: 'Häuser', distances: 'Entfernungen', others: 'Weitere Häuser',
+    photos: (n) => `${n} Fotos`,
+    guests: 'Gäste', rooms: pl('Schlafzimmer', 'Schlafzimmer'), baths: pl('Badezimmer', 'Badezimmer'),
+    beds: 'Betten', room: (n) => `Schlafzimmer ${n}`, living: 'Wohnzimmer', amenities: 'Inklusive', video: 'Video',
+    bed: { double: 'Doppelbett', twin: '2 Einzelbetten', sofa: 'Schlafsofa' },
+    am: { wifi: 'WLAN', ac: 'Klimaanlage', kitchen: 'Ausgestattete Küche', parking: 'Parkplatz', linen: 'Bettwäsche & Handtücher', washer: 'Waschmaschine', dishwasher: 'Geschirrspüler', tv: 'TV', terrace: 'Terrasse', balcony: 'Balkon', dining: 'Esszimmer', forest: 'Kiefernwald' },
+    kind: { apartment: 'Ferienwohnung', bungalow: 'Bungalow' },
+    waText: (name) => `Hallo, ich möchte die Verfügbarkeit von ${name} anfragen.`,
+    sheet: { close: 'Schließen', newTab: 'In neuem Fenster öffnen', loading: 'Wird geladen…', slow: 'Dauert es zu lange?', help: 'Fragen?' },
+    alsoOn: 'Auch auf',
+    place: { airport: 'Flughafen Porto', beach: 'Strand von Matosinhos', douro: 'Douro-Tal', park: 'Naturpark Serra da Estrela', spa: 'Thermalbad Caldas de Manteigas', aerodrome: 'Flugplatz Viseu' },
+    meta: { home: 'Drei Ferienwohnungen in Rebordosa, Paredes, 25 km von Porto.', contact: 'Telefon, WhatsApp, E-Mail und Adresse der Casa da Petisqueira.', booking: 'Casa da Petisqueira buchen.' },
+    contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-Mail' },
+    lightbox: { close: 'Schließen', prev: 'Zurück', next: 'Weiter' },
+    notFound: { title: 'Seite nicht gefunden', back: 'Zur Startseite' },
+    otherSite: { bungalow: 'Bungalow in der Serra da Estrela', casas: 'Ferienwohnungen bei Porto' },
+  },
+  it: {
+    htmlLang: 'it', langName: 'Italiano',
+    terms: 'italian italiano italien italienisch italiaans włoski italia italy svizzera switzerland san marino itália italie italien italië włochy suíça suiza suisse schweiz zwitserland szwajcaria',
+    search: 'Lingua o paese', menu: 'Menu', noLang: 'Non c’è? Usa l’inglese.',
+    nav: { houses: 'Case', location: 'Posizione', contact: 'Contatti' },
+    book: 'Prenota', call: 'Chiama',
+    mapShort: 'Indicazioni',
+    pick: { checkin: 'Arrivo', checkout: 'Partenza', adults: 'Adulti', children: 'Bambini', go: 'Vedi i prezzi' },
+    rights: 'Tutti i diritti riservati',
+    hero: 'Tre appartamenti a Rebordosa, Paredes, a 25 km da Porto.',
+    phoneLabel: 'Prenotazioni per telefono',
+    directions: 'Come arrivare', houses: 'Case', distances: 'Distanze', others: 'Altre case',
+    photos: (n) => `${n} foto`,
+    guests: 'ospiti', rooms: pl('camera', 'camere'), baths: pl('bagno', 'bagni'),
+    beds: 'Letti', room: (n) => `Camera ${n}`, living: 'Soggiorno', amenities: 'Incluso', video: 'Video',
+    bed: { double: 'Letto matrimoniale', twin: '2 letti singoli', sofa: 'Divano letto' },
+    am: { wifi: 'Wi-Fi', ac: 'Aria condizionata', kitchen: 'Cucina attrezzata', parking: 'Parcheggio', linen: 'Biancheria e asciugamani', washer: 'Lavatrice', dishwasher: 'Lavastoviglie', tv: 'TV', terrace: 'Terrazza', balcony: 'Balcone', dining: 'Sala da pranzo', forest: 'Pineta' },
+    kind: { apartment: 'Appartamento', bungalow: 'Bungalow' },
+    waText: (name) => `Buongiorno, vorrei sapere la disponibilità di ${name}.`,
+    sheet: { close: 'Chiudi', newTab: 'Apri in una nuova finestra', loading: 'Caricamento…', slow: 'Ci mette troppo?', help: 'Domande?' },
+    alsoOn: 'Anche su',
+    place: { airport: 'Aeroporto di Porto', beach: 'Spiaggia di Matosinhos', douro: 'Valle del Douro', park: 'Parco naturale della Serra da Estrela', spa: 'Terme di Caldas de Manteigas', aerodrome: 'Aerodromo di Viseu' },
+    meta: { home: 'Tre appartamenti a Rebordosa, Paredes, a 25 km da Porto.', contact: 'Telefono, WhatsApp, email e indirizzo di Casa da Petisqueira.', booking: 'Prenota a Casa da Petisqueira.' },
+    contact: { title: 'Contatti', phone: 'Telefono', email: 'Email' },
+    lightbox: { close: 'Chiudi', prev: 'Precedente', next: 'Successiva' },
+    notFound: { title: 'Pagina non trovata', back: 'Vai alla home' },
+    otherSite: { bungalow: 'Bungalow nella Serra da Estrela', casas: 'Appartamenti vicino a Porto' },
+  },
+  nl: {
+    htmlLang: 'nl', langName: 'Nederlands',
+    terms: 'dutch holandês neerlandés néerlandais niederländisch olandese niderlandzki nederland netherlands holland belgië belgie belgium vlaanderen flanders suriname holanda países baixos paises bajos pays-bas niederlande paesi bassi holandia bélgica belgica belgique belgien belgio belgia',
+    search: 'Taal of land', menu: 'Menu', noLang: 'Niet gevonden? Kies Engels.',
+    nav: { houses: 'Huizen', location: 'Ligging', contact: 'Contact' },
+    book: 'Boeken', call: 'Bellen',
+    mapShort: 'Route',
+    pick: { checkin: 'Aankomst', checkout: 'Vertrek', adults: 'Volwassenen', children: 'Kinderen', go: 'Prijzen bekijken' },
+    rights: 'Alle rechten voorbehouden',
+    hero: 'Drie appartementen in Rebordosa, Paredes, op 25 km van Porto.',
+    phoneLabel: 'Boeken per telefoon',
+    directions: 'Route', houses: 'Huizen', distances: 'Afstanden', others: 'Andere huizen',
+    photos: (n) => `${n} foto’s`,
+    guests: 'gasten', rooms: pl('slaapkamer', 'slaapkamers'), baths: pl('badkamer', 'badkamers'),
+    beds: 'Bedden', room: (n) => `Slaapkamer ${n}`, living: 'Woonkamer', amenities: 'Inbegrepen', video: 'Video',
+    bed: { double: 'Tweepersoonsbed', twin: '2 eenpersoonsbedden', sofa: 'Slaapbank' },
+    am: { wifi: 'Wifi', ac: 'Airconditioning', kitchen: 'Uitgeruste keuken', parking: 'Parkeren', linen: 'Beddengoed & handdoeken', washer: 'Wasmachine', dishwasher: 'Vaatwasser', tv: 'Tv', terrace: 'Terras', balcony: 'Balkon', dining: 'Eetkamer', forest: 'Dennenbos' },
+    kind: { apartment: 'Appartement', bungalow: 'Bungalow' },
+    waText: (name) => `Hallo, ik wil graag de beschikbaarheid van ${name} weten.`,
+    sheet: { close: 'Sluiten', newTab: 'Openen in nieuw venster', loading: 'Laden…', slow: 'Duurt het te lang?', help: 'Vragen?' },
+    alsoOn: 'Ook op',
+    place: { airport: 'Luchthaven Porto', beach: 'Strand van Matosinhos', douro: 'Dourovallei', park: 'Natuurpark Serra da Estrela', spa: 'Thermen van Caldas de Manteigas', aerodrome: 'Vliegveld Viseu' },
+    meta: { home: 'Drie appartementen in Rebordosa, Paredes, op 25 km van Porto.', contact: 'Telefoon, WhatsApp, e-mail en adres van Casa da Petisqueira.', booking: 'Boeken bij Casa da Petisqueira.' },
+    contact: { title: 'Contact', phone: 'Telefoon', email: 'E-mail' },
+    lightbox: { close: 'Sluiten', prev: 'Vorige', next: 'Volgende' },
+    notFound: { title: 'Pagina niet gevonden', back: 'Naar de startpagina' },
+    otherSite: { bungalow: 'Bungalow in de Serra da Estrela', casas: 'Appartementen bij Porto' },
+  },
+  pl: {
+    htmlLang: 'pl', langName: 'Polski',
+    terms: 'polish polaco polonais polnisch polacco pools polska poland polónia polonia pologne polen',
+    search: 'Język lub kraj', menu: 'Menu', noLang: 'Brak języka? Wybierz angielski.',
+    nav: { houses: 'Domy', location: 'Lokalizacja', contact: 'Kontakt' },
+    book: 'Rezerwuj', call: 'Zadzwoń',
+    mapShort: 'Dojazd',
+    pick: { checkin: 'Przyjazd', checkout: 'Wyjazd', adults: 'Dorośli', children: 'Dzieci', go: 'Zobacz ceny' },
+    rights: 'Wszelkie prawa zastrzeżone',
+    hero: 'Trzy apartamenty w Rebordosa, Paredes, 25 km od Porto.',
+    phoneLabel: 'Rezerwacje telefoniczne',
+    directions: 'Dojazd', houses: 'Domy', distances: 'Odległości', others: 'Inne domy',
+    photos: (n) => `${n} zdjęć`,
+    guests: 'osób', rooms: plPL('sypialnia', 'sypialnie', 'sypialni'), baths: plPL('łazienka', 'łazienki', 'łazienek'),
+    beds: 'Łóżka', room: (n) => `Sypialnia ${n}`, living: 'Salon', amenities: 'W cenie', video: 'Wideo',
+    bed: { double: 'Łóżko podwójne', twin: '2 łóżka pojedyncze', sofa: 'Rozkładana sofa' },
+    am: { wifi: 'Wi-Fi', ac: 'Klimatyzacja', kitchen: 'Wyposażona kuchnia', parking: 'Parking', linen: 'Pościel i ręczniki', washer: 'Pralka', dishwasher: 'Zmywarka', tv: 'TV', terrace: 'Taras', balcony: 'Balkon', dining: 'Jadalnia', forest: 'Las sosnowy' },
+    kind: { apartment: 'Apartament', bungalow: 'Bungalow' },
+    waText: (name) => `Dzień dobry, pytanie o dostępność: ${name}.`,
+    sheet: { close: 'Zamknij', newTab: 'Otwórz w nowym oknie', loading: 'Ładowanie…', slow: 'Trwa to za długo?', help: 'Pytania?' },
+    alsoOn: 'Także na',
+    place: { airport: 'Lotnisko Porto', beach: 'Plaża Matosinhos', douro: 'Dolina Douro', park: 'Park Przyrody Serra da Estrela', spa: 'Uzdrowisko Caldas de Manteigas', aerodrome: 'Lotnisko Viseu' },
+    meta: { home: 'Trzy apartamenty w Rebordosa, Paredes, 25 km od Porto.', contact: 'Telefon, WhatsApp, e-mail i adres Casa da Petisqueira.', booking: 'Rezerwacja w Casa da Petisqueira.' },
+    contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-mail' },
+    lightbox: { close: 'Zamknij', prev: 'Poprzednie', next: 'Następne' },
+    notFound: { title: 'Nie znaleziono strony', back: 'Strona główna' },
+    otherSite: { bungalow: 'Bungalow w Serra da Estrela', casas: 'Apartamenty koło Porto' },
+  },
+};

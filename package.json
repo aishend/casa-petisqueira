@@ -1,0 +1,11 @@
+{
+  "name": "casa-petisqueira",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "dev": "node src/build.mjs && python3 -m http.server 8080 --bind 0.0.0.0 -d dist",
+    "dev:bungalow": "node src/build.mjs && python3 -m http.server 8081 --bind 0.0.0.0 -d dist-bungalow",
+    "images": "scripts/optimize-images.sh"
+  }
+}

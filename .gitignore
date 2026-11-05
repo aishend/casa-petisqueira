@@ -1,17 +1,9 @@
-# JPGs originais: o site só usa as versões .webp
-*.jpg
+# Site gerado (o GitHub Actions gera-o a cada push)
+/dist/
+/dist-bungalow/
 
-# Cópias duplicadas de imagens (o site usa /casas/<id>/*.webp)
-/casas/casas/
-/propriedades/casas/
+# Fotos e vídeos originais, pesados. O site usa as versões em static/
+/fotos-originais/
 
-# Cópia solta do site dentro de /casas/
-/casas/_astro/
-/casas/en/
-/casas/fr/
-/casas/propriedades/
-/casas/index.html
-/casas/*.ico
-/casas/*.svg
-/casas/*.png
-/casas/*.webp
+node_modules/
+.DS_Store
