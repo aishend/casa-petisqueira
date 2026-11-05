@@ -153,11 +153,12 @@ function picker(lang, max, cls = '') {
         <button type="button" data-step="1" aria-label="${esc(label)} +">+</button>
       </div>
     </div>`;
-  return `<form class="picker ${cls}" action="${SITE.bookingEngineBase(lang)}" method="get" data-picker data-max="${max}">
-    <div class="picker__dates">
-      <label>${icon('calendar', 'icon icon--sm')}<span><small>${t.pick.checkin}</small><input type="date" name="start_date" required></span></label>
-      <label>${icon('calendar', 'icon icon--sm')}<span><small>${t.pick.checkout}</small><input type="date" name="end_date" required></span></label>
-    </div>
+  // As datas escolhem-se no calendário do main.js (botões data-cal); ficam nos campos escondidos.
+  const day = (k, label) => `<button type="button" data-cal="${k}">${icon('calendar', 'icon icon--sm')}<span><small>${label}</small><b data-show="${k}">${t.pick.add}</b></span></button>`;
+  return `<form class="picker ${cls}" action="${SITE.bookingEngineBase(lang)}" method="get" data-picker data-max="${max}" data-t="${esc(JSON.stringify({ ...t.pick, locale: t.htmlLang }))}">
+    <div class="picker__dates">${day('start', t.pick.checkin)}${day('end', t.pick.checkout)}</div>
+    <p class="picker__nights" data-nights hidden></p>
+    <input type="hidden" name="start_date"><input type="hidden" name="end_date">
     ${step('adults', t.pick.adults, Math.min(2, max), 1, icon('guests', 'icon icon--sm'))}
     ${step('children', t.pick.children, 0, 0)}
     <button class="btn btn--primary btn--block btn--lg" type="submit">${icon('calendar')}<span>${t.pick.go}</span></button>
@@ -294,6 +295,7 @@ ${body}
     </div>
   </div>
   <div class="wrap footer__bottom"><span>© ${new Date().getFullYear()} ${SITE.name}. ${t.rights}.</span><span class="footer__langs">${footLangs}</span></div>
+  <p class="wrap footer__credit">${t.credit} ${SITE.dev.name}, ${SITE.dev.role} · <a href="mailto:${SITE.dev.email}">${SITE.dev.email}</a> · <a href="${SITE.dev.linkedin}" rel="noopener">LinkedIn</a></p>
 </footer>
 
 <nav class="bar" aria-label="${t.book}">
@@ -363,7 +365,7 @@ function card(p, lang) {
 }
 
 const placeName = (k, lang) => T[lang].place[k] ?? k;
-const distList = (k, lang) => `<ul>${LOCATIONS[k].distances.map(([km, n]) => `<li><span>${placeName(n, lang)}</span><b>${km} km</b></li>`).join('')}</ul>`;
+const distList = (k, lang) => `<ul>${LOCATIONS[k].distances.map(([km, n]) => `<li><span>${placeName(n, lang)}</span><b>${typeof km === 'number' ? `${km} km` : km}</b></li>`).join('')}</ul>`;
 
 // Mapa + botões Google Maps e Waze (com logótipos).
 function mapBlock(k, lang) {
