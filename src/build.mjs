@@ -165,10 +165,9 @@ function picker(lang, max, cls = '') {
       </div>
     </div>`;
   // As datas escolhem-se no calendário do main.js (botões data-cal); ficam nos campos escondidos.
-  const day = (k, label) => `<button type="button" data-cal="${k}">${icon('calendar', 'icon icon--sm')}<span><small>${label}</small><b data-show="${k}">${t.pick.add}</b></span></button>`;
+  const day = (k, label) => `<button type="button" data-cal="${k}">${icon('calendar', 'icon icon--sm')}<span><small data-label="${k}">${label}</small><b data-show="${k}">${t.pick.add}</b></span></button>`;
   return `<form class="picker ${cls}" action="${SITE.bookingEngineBase(lang)}" method="get" data-picker data-max="${max}" data-t="${esc(JSON.stringify({ ...t.pick, locale: t.htmlLang }))}">
     <div class="picker__dates">${day('start', t.pick.checkin)}${day('end', t.pick.checkout)}</div>
-    <p class="picker__nights" data-nights hidden></p>
     <input type="hidden" name="start_date"><input type="hidden" name="end_date">
     ${step('adults', t.pick.adults, Math.min(2, max), 1, icon('guests', 'icon icon--sm'))}
     ${step('children', t.pick.children, 0, 0)}

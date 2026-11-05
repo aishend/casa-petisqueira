@@ -461,7 +461,6 @@ body:has(.sheet[open]), body:has(.lightbox[open]) { overflow: hidden; }
 
 .footer__credit { padding-block: 0 1.5rem; font-size: .8rem; color: var(--muted); }
 .footer__credit a { color: inherit; }
-.picker__nights { display: flex; align-items: center; gap: .4rem; margin-top: -.15rem; font-size: .88rem; font-weight: 600; color: var(--brand); }
 
 /* também noutras plataformas: discreto, a reserva direta é o destaque */
 .also { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .9rem; margin-top: .25rem; padding-top: .7rem; border-top: 1px solid var(--line); font-size: .8rem; color: var(--muted); }

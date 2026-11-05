@@ -157,7 +157,6 @@ function calendar(form) {
   const fMonth = fmt({ month: 'long', year: 'numeric' });
   const fWeek = fmt({ weekday: 'narrow' });
   const fFull = fmt({ weekday: 'long', day: 'numeric', month: 'long' });
-  const moon = '<svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
   const nights = (n) => `${n} ${n === 1 ? t.n1 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? t.n2 : t.n5}`;
   const today = iso(new Date());
@@ -221,9 +220,8 @@ function calendar(form) {
     $('[data-show=start]', form).textContent = a && b ? fDay.format(parse(a)) : t.add;
     $('[data-show=end]', form).textContent = a && b ? fDay.format(parse(b)) : t.add;
     form.classList.toggle('has-dates', !!(a && b));
-    const n = $('[data-nights]', form);
-    n.hidden = !(a && b);
-    n.innerHTML = a && b ? `${moon}${nights(nightsBetween(a, b))}` : '';
+    // A contagem de noites fica junto à saída: "Saída · 9 noites".
+    $('[data-label=end]', form).textContent = a && b ? `${t.checkout} · ${nights(nightsBetween(a, b))}` : t.checkout;
   };
 
   dlg.addEventListener('click', (e) => {
