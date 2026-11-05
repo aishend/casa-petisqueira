@@ -303,7 +303,7 @@ ${body}
     </div>
   </div>
   <div class="wrap footer__bottom"><span>© ${new Date().getFullYear()} ${SITE.name}. ${t.rights}.</span><span class="footer__langs">${footLangs}</span></div>
-  <p class="wrap footer__credit">${t.credit} ${SITE.dev.name}, ${SITE.dev.role} · <a href="mailto:${SITE.dev.email}">${SITE.dev.email}</a> · <a href="${SITE.dev.linkedin}" rel="noopener">LinkedIn</a></p>
+  <p class="wrap footer__credit">${t.credit} <a href="${SITE.dev.site}" rel="noopener">${SITE.dev.name}</a>, ${SITE.dev.role} · <a href="${SITE.dev.site}" rel="noopener">${new URL(SITE.dev.site).host}</a> · <a href="mailto:${SITE.dev.email}">${SITE.dev.email}</a> · <a href="${SITE.dev.linkedin}" rel="noopener">LinkedIn</a></p>
 </footer>
 
 <nav class="bar" aria-label="${t.book}">

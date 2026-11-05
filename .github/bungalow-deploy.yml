@@ -1,0 +1,43 @@
+# Cópia do workflow do repositório aishend/bungalow-serra-estrela (lá fica em .github/workflows/deploy.yml).
+# Vai buscar o código a aishend/casa-petisqueira, gera o site e publica só dist-bungalow/ em bungalowserraestrela.com.
+# Corre todos os dias e quando é chamado à mão (gh workflow run -R aishend/bungalow-serra-estrela deploy.yml).
+name: Publicar site do bungalow
+
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: aishend/casa-petisqueira
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: node src/build.mjs
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist-bungalow
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -20,7 +20,7 @@ export const SITE = {
   bookingEngineBase: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room`,
   bookingEngine: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room#DatesGuests-BE`,
   // Nota no rodapé: quem fez e mantém o site.
-  dev: { name: 'Leandro Moreira', role: 'Software Engineer', email: 'leandroafonsopm@gmail.com', linkedin: 'https://www.linkedin.com/in/leandro-afonso-m/' },
+  dev: { name: 'Leandro Moreira', role: 'Software Engineer', site: 'https://leandromoreira.pt', email: 'leandroafonsopm@gmail.com', linkedin: 'https://www.linkedin.com/in/leandro-afonso-m/' },
   bookingCom: (base, lang) => `${base}.${BOOKING_LANG[lang] ?? 'en-gb'}.html`,
 };
 
@@ -58,9 +58,9 @@ export const SITES = {
   },
   bungalow: {
     out: 'dist-bungalow',
-    url: 'https://bungalow.casadapetisqueira.com', // provisório
-    cname: false, // pôr true quando o domínio estiver configurado
-    live: false, // pôr true quando o site do bungalow estiver publicado; até lá os links vão para o Booking.com
+    url: 'https://bungalowserraestrela.com',
+    // Publicado pelo repositório aishend/bungalow-serra-estrela (ver .github/bungalow-deploy.yml).
+    live: false, // pôr true quando bungalowserraestrela.com estiver online; até lá os links vão para o Booking.com
     name: 'Bungalow Serra da Estrela',
     properties: ['bungalow-seia'],
     location: 'seia',
