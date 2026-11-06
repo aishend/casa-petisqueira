@@ -119,6 +119,7 @@ const ICON = {
   // camas
   double: '<path d="M3 20v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7M3 17h18M5 11V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v5M7 11V8.5h4V11M13 11V8.5h4V11"/>',
   twin: '<path d="M2 20v-6a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 10 14v6M2 17.5h8M14 20v-6a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 1 22 14v6M14 17.5h8M4 12.5V10h4v2.5M16 12.5V10h4v2.5"/>',
+  floor: '<path d="M3 20h5v-5h5v-5h5V5h3"/>',
   sofa: '<path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3M3 11a2 2 0 0 1 2 2v2h14v-2a2 2 0 0 1 4 0v5H1v-5a2 2 0 0 1 2-2zM4 18v2M20 18v2"/>',
 };
 const icon = (name, cls = 'icon') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name]}</svg>`;
@@ -381,6 +382,7 @@ function facts(p, lang, { compact = false } = {}) {
     ['bed', p.typology ?? p.rooms.length, roomsText(p, lang)],
     !compact && ['double', bedCount(p), EXTRA[lang].beds(bedCount(p))],
     ['bath', p.bathrooms, t.baths(p.bathrooms)],
+    !compact && p.floor != null && ['floor', '', EXTRA[lang].floor(p.floor)],
     p.area && ['area', `${p.area} m²`, `${p.area} m²`],
   ].filter(Boolean);
   return `<ul class="facts${compact ? ' facts--compact' : ''}">${items.map(([ic, short, long]) =>
@@ -486,6 +488,7 @@ function bedList(p, lang) {
   const t = T[lang];
   const rooms = p.rooms.map((b, i) => `<li>${icon(b, 'icon beds__icon')}<span><small>${t.room(i + 1)}</small>${t.bed[b]}</span></li>`);
   if (p.sofas) rooms.push(`<li>${icon('sofa', 'icon beds__icon')}<span><small>${t.living}</small>${p.sofas > 1 ? `${p.sofas} × ` : ''}${t.bed.sofa}</span></li>`);
+  if (p.extraBed) rooms.push(`<li>${icon('bed', 'icon beds__icon')}<span><small>+1</small>${EXTRA[lang].extraBed}</span></li>`);
   return `<ul class="beds">${rooms.join('')}</ul>`;
 }
 
@@ -650,6 +653,7 @@ function accommodation(p, lang) {
     numberOfRooms: p.rooms.length,
     numberOfBedrooms: p.rooms.length,
     numberOfBathroomsTotal: p.bathrooms,
+    ...(p.floor != null && { floorLevel: EXTRA.en.floor(p.floor) }),
     occupancy: { '@type': 'QuantitativeValue', maxValue: p.guests[0] + p.guests[1] },
     bed: [
       ...p.rooms.map((b) => ({ '@type': 'BedDetails', numberOfBeds: b === 'twin' ? 2 : 1, typeOfBed: b === 'twin' ? 'Single' : 'Double' })),
