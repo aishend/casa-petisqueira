@@ -106,7 +106,7 @@ export const REDIRECTS = {
 // id = pasta em static/img/<id>/ e chave em ROUTES.
 // guests: [pessoas em camas, pessoas em sofás-cama]
 // rooms: cama de cada quarto (double = casal, twin = duas individuais); sofas: sofás-cama na sala.
-// booking / airbnb / expedia / tripcom: anúncios da casa nessas plataformas (os que faltarem não aparecem).
+// booking / airbnb / expedia: anúncios da casa nessas plataformas (os que faltarem não aparecem).
 // amenities: chaves de T[lang].am, pela ordem em que aparecem (as 4 primeiras vão para os cartões).
 export const PROPERTIES = [
   {
@@ -115,7 +115,9 @@ export const PROPERTIES = [
     name: 'Casa 61',
     kind: 'apartment',
     location: 'porto',
-    featured: [35, 1, 25, 3, 46], // capa + 4 fotos em destaque (nº do ficheiro)
+    featured: [37, 25, 11, 3, 16], // capa + 4 fotos em destaque (nº do ficheiro)
+    // Fotos escolhidas, pela ordem da galeria (sem repetidas nem fracas). As outras ficam em static/ mas não aparecem.
+    photos: [37, 25, 11, 3, 16, 1, 20, 32, 27, 29, 38, 35, 9, 5, 13, 17, 21, 41, 42, 43, 46, 48, 45, 44],
     video: 'casa-61',
     guests: [6, 2],
     rooms: ['double', 'double', 'twin'],
@@ -126,7 +128,6 @@ export const PROPERTIES = [
     booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira',
     airbnb: 'https://www.airbnb.com/rooms/52890901',
     expedia: 'https://www.expedia.com/Paredes-Hotels-Casas-Da-Petisqueira-Paredes-Oporto.h99046711.Hotel-Information',
-    tripcom: 'https://www.trip.com/hotels/paredes-hotel-detail-113031891/casas-da-petisqueira-61-paredes-oporto/',
   },
   {
     id: 'casa-88',
@@ -134,7 +135,9 @@ export const PROPERTIES = [
     name: 'Casa 88',
     kind: 'apartment',
     location: 'porto',
-    featured: [14, 3, 17, 23, 24],
+    featured: [17, 16, 3, 12, 26],
+    // Fotos escolhidas, pela ordem da galeria (sem repetidas nem fracas). As outras ficam em static/ mas não aparecem.
+    photos: [17, 16, 3, 12, 26, 14, 19, 21, 23, 4, 5, 13, 8, 9, 36, 1, 29, 33, 35, 32, 31],
     video: 'casa-88',
     guests: [4, 2],
     rooms: ['double', 'twin'],
@@ -145,7 +148,6 @@ export const PROPERTIES = [
     booking: 'https://www.booking.com/hotel/pt/casa-petisqueira-88-paredes-oporto',
     airbnb: 'https://www.airbnb.com/rooms/963762738774530762',
     expedia: 'https://www.expedia.com/Paredes-Hotels-Casa-Da-Petisqueira-88.h97041508.Hotel-Information',
-    tripcom: 'https://www.trip.com/hotels/paredes-hotel-detail-112947395/casa-da-petisqueira-88-paredes-o-porto',
   },
   {
     id: 'casa-54',
@@ -153,7 +155,9 @@ export const PROPERTIES = [
     name: 'Casa 54',
     kind: 'apartment',
     location: 'porto',
-    featured: [5, 7, 25, 4, 34],
+    featured: [5, 25, 7, 15, 34],
+    // Fotos escolhidas, pela ordem da galeria (sem repetidas nem fracas). As outras ficam em static/ mas não aparecem.
+    photos: [5, 25, 7, 15, 34, 29, 27, 14, 58, 31, 42, 9, 11, 20, 1, 2, 23, 33, 35, 22, 21],
     guests: [4, 2],
     rooms: ['double', 'twin'],
     sofas: 2,
@@ -170,7 +174,9 @@ export const PROPERTIES = [
     name: 'Eco Bungalow da Serra da Estrela',
     kind: 'bungalow',
     location: 'seia',
-    featured: [40, 1, 7, 9, 49],
+    featured: [10, 9, 1, 11, 22],
+    // Fotos escolhidas, pela ordem da galeria (sem repetidas nem fracas). As outras ficam em static/ mas não aparecem.
+    photos: [10, 9, 1, 11, 22, 2, 5, 6, 8, 15, 17, 19, 4, 12, 21, 39, 37, 41, 45, 46],
     guests: [2, 0],
     rooms: ['double'],
     sofas: 0,
