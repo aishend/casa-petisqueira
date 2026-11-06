@@ -366,6 +366,11 @@ ${body}
 
 // ---------- blocos ----------
 
+// Camas nos quartos (as duas individuais contam como 2), sem os sofás-cama.
+const bedCount = (p) => p.rooms.reduce((n, b) => n + (b === 'twin' ? 2 : 1), 0);
+// "T3 · 3 quartos" em português (a tipologia só se usa em Portugal); "3 bedrooms" nas outras línguas.
+const roomsText = (p, lang, sep = ' · ') => (lang === 'pt' && p.typology ? `${p.typology}${sep}` : '') + T[lang].rooms(p.rooms.length);
+
 const guestsLabel = (p) => (p.guests[1] ? `${p.guests[0]} + ${p.guests[1]}` : `${p.guests[0]}`);
 
 // Pessoas, quartos, casas de banho e área, com ícones. compact: só números (cartões).
@@ -373,7 +378,8 @@ function facts(p, lang, { compact = false } = {}) {
   const t = T[lang];
   const items = [
     ['guests', guestsLabel(p), `${guestsLabel(p)} ${t.guests}`],
-    ['bed', p.rooms.length, t.rooms(p.rooms.length)],
+    ['bed', lang === 'pt' && p.typology ? p.typology : p.rooms.length, roomsText(p, lang)],
+    !compact && ['double', bedCount(p), EXTRA[lang].beds(bedCount(p))],
     ['bath', p.bathrooms, t.baths(p.bathrooms)],
     p.area && ['area', `${p.area} m²`, `${p.area} m²`],
   ].filter(Boolean);
@@ -496,7 +502,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
   const kind = t.kind[p.kind];
   // No telemóvel começa pelas fotos em destaque e depois as restantes.
   const order = [...p.featured, ...all.filter((n) => !p.featured.includes(n))];
-  const summary = `${kind} · ${t.rooms(p.rooms.length)} · ${guestsLabel(p)} ${t.guests} · ${loc.address}`;
+  const summary = `${kind} · ${roomsText(p, lang)} · ${guestsLabel(p)} ${t.guests} · ${loc.address}`;
 
   // Lista de fotos para a galeria em ecrã inteiro (lida pelo main.js).
   const gallery = order.map((n) => ({
@@ -575,8 +581,8 @@ ${standalone ? standaloneExtra(p, lang) : `<section class="section section--tint
 
   return layout({
     lang, key: standalone ? 'home' : p.id,
-    title: standalone ? t.seo.bunTitle : `${t.seo.propTitle(p.name, t.rooms(p.rooms.length))} | ${SITE.name}`,
-    description: standalone ? t.seo.bunDesc : t.seo.propDesc(p.name, t.rooms(p.rooms.length), p.guests[0] + p.guests[1]),
+    title: standalone ? t.seo.bunTitle : `${t.seo.propTitle(p.name, roomsText(p, lang, ', '))} | ${SITE.name}`,
+    description: standalone ? t.seo.bunDesc : t.seo.propDesc(p.name, roomsText(p, lang, ', '), p.guests[0] + p.guests[1]),
     image: imgPath(p.id, main, 1920), body,
     jsonld: standalone
       ? { '@context': 'https://schema.org', ...business(lang), description: t.seo.bunDesc, containsPlace: [accommodation(p, lang)] }
@@ -639,7 +645,7 @@ function accommodation(p, lang) {
     '@type': p.kind === 'apartment' ? 'Apartment' : 'Accommodation',
     name: p.name,
     url: SITE.url + (ROUTES[p.id]?.[lang] ?? ROUTES.home[lang]),
-    description: p.kind === 'apartment' ? t.seo.propDesc(p.name, t.rooms(p.rooms.length), p.guests[0] + p.guests[1]) : t.seo.bunDesc,
+    description: p.kind === 'apartment' ? t.seo.propDesc(p.name, roomsText(p, lang, ', '), p.guests[0] + p.guests[1]) : t.seo.bunDesc,
     image: p.featured.map((n) => SITE.url + imgPath(p.id, n, 1920)),
     numberOfRooms: p.rooms.length,
     numberOfBedrooms: p.rooms.length,
