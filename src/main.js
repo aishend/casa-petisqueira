@@ -399,3 +399,10 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     for (const ev of ['scroll', 'wheel', 'keydown', 'resize']) addEventListener(ev, hide, { capture: true, passive: true });
   });
 }
+
+// Fotos marcadas para mais tarde (mosaico da Serra): só depois de a página carregar, para a foto de topo vir primeiro.
+{
+  const late = document.querySelectorAll('img[data-srcset]');
+  const go = () => late.forEach((i) => { i.srcset = i.dataset.srcset; i.src = i.dataset.src; });
+  if (late.length) document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true });
+}

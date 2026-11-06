@@ -63,13 +63,15 @@ const imgPath = (id, n, w) => `/img/${id}/${pad(n)}-${w}.webp`;
 const HERO_SIZES = '(max-width: 767px) 340px, 100vw';
 const srcsetOf = (id, n) => WIDTHS.map((w) => `${imgPath(id, n, w)} ${webpSize(join(STATIC, imgPath(id, n, w)))[0]}w`).join(', ');
 
-function img(id, n, { alt = '', sizes = '100vw', eager = false, cls = '', low = false } = {}) {
+// late: a foto só começa a carregar depois da página (o main.js troca data-src por src), para não atrasar a foto de topo.
+function img(id, n, { alt = '', sizes = '100vw', eager = false, cls = '', low = false, late = false } = {}) {
   const srcset = WIDTHS.map((w) => {
     const [rw] = webpSize(join(STATIC, imgPath(id, n, w)));
     return `${imgPath(id, n, w)} ${rw}w`;
   }).join(', ');
   const [w, h] = webpSize(join(STATIC, imgPath(id, n, 1024)));
-  return `<img src="${imgPath(id, n, 1024)}" srcset="${srcset}" sizes="${sizes}" width="${w}" height="${h}" alt="${esc(alt)}"${cls ? ` class="${cls}"` : ''} ${eager ? 'fetchpriority="high"' : `loading="lazy"${low ? ' fetchpriority="low"' : ''}`} decoding="async">`;
+  const s = late ? 'data-' : '';
+  return `<img ${s}src="${imgPath(id, n, 1024)}" ${s}srcset="${srcset}" sizes="${sizes}" width="${w}" height="${h}" alt="${esc(alt)}"${cls ? ` class="${cls}"` : ''} ${eager ? 'fetchpriority="high"' : `loading="lazy"${low ? ' fetchpriority="low"' : ''}`} decoding="async">`;
 }
 
 
@@ -730,7 +732,7 @@ function serraPage(lang) {
   <div class="wrap gallery" data-gallery='${JSON.stringify(gallery)}'>
     <h2 class="sr-only">${x.see}</h2>
     <div class="mosaic-serra">
-      ${photos.slice(1).map((f, i) => `<button class="ms ${shape(i) ? `ms--${shape(i)}` : ''}" data-open="${i + 1}">${img('serra', f.n, { alt: alt(f), sizes: shape(i) ? '(min-width: 768px) 50vw, 340px' : '(min-width: 768px) 25vw, 160px', low: true })}<span>${esc(f.place)}</span></button>`).join('')}
+      ${photos.slice(1).map((f, i) => `<button class="ms ${shape(i) ? `ms--${shape(i)}` : ''}" data-open="${i + 1}">${img('serra', f.n, { alt: alt(f), sizes: shape(i) ? '(min-width: 768px) 50vw, 340px' : '(min-width: 768px) 25vw, 160px', late: true })}<span>${esc(f.place)}</span></button>`).join('')}
     </div>
   </div>
 </section>
