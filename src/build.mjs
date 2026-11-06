@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, ex
 import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE as CONTACT, LOCATIONS, LANGS, SITES, ROUTES as MAIN_ROUTES, REDIRECTS, PROPERTIES as ALL_PROPERTIES, T, REGION, googleMapsDir, wazeDir } from './data.mjs';
+import { SITE as CONTACT, LOCATIONS, LANGS, SITES, ROUTES as MAIN_ROUTES, REDIRECTS, PROPERTIES as ALL_PROPERTIES, T, REGION, EXTRA, googleMapsDir, wazeDir } from './data.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const STATIC = join(ROOT, 'static');
@@ -21,7 +21,10 @@ function useSite(key) {
   HERO = CFG.hero;
   DIST = join(ROOT, CFG.out);
   // O site do bungalow é uma só página por língua.
-  ROUTES = IS_BUNGALOW ? { home: MAIN_ROUTES.home } : MAIN_ROUTES;
+  // Site do bungalow: página principal + página da Serra da Estrela (o nome não se traduz).
+  ROUTES = IS_BUNGALOW
+    ? { home: MAIN_ROUTES.home, serra: Object.fromEntries(LANGS.map((l) => [l, `${MAIN_ROUTES.home[l]}serra-da-estrela/`])) }
+    : MAIN_ROUTES;
 }
 
 // ---------- utilitários ----------
@@ -249,7 +252,7 @@ function layout({ lang, key, title, description, body, image, jsonld, preload = 
   const engine = SITE.bookingEngine(lang);
 
   return `<!doctype html>
-<html lang="${t.htmlLang}">
+<html lang="${t.htmlLang}"${IS_BUNGALOW ? ' class="eco"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -265,7 +268,7 @@ ${alternates}
 <meta property="og:image" content="${ogImage}">
 <meta property="og:url" content="${SITE.url}${route}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="${IS_BUNGALOW ? '#f3eadb' : '#ffffff'}">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -284,10 +287,10 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script
 <header class="header">
   <div class="wrap header__inner">
     <a class="brand" href="${home}" aria-label="${SITE.name}">${IS_BUNGALOW
-      ? `<span class="brand__text">${SITE.name}</span>`
+      ? `<img src="/marca-bungalow/letras-360.webp" srcset="/marca-bungalow/letras-360.webp 360w, /marca-bungalow/letras-720.webp 720w" sizes="200px" width="360" height="76" alt="${SITE.name}">`
       : `<img src="/img/logo-horizontal.webp" width="650" height="97" alt="${SITE.name}">`}</a>
     <nav class="nav" id="nav">
-      ${IS_BUNGALOW ? '' : navItem(`${home}#casas`, t.nav.houses, 'houses')}
+      ${IS_BUNGALOW ? navItem(ROUTES.serra[lang], 'Serra da Estrela', 'serra') : navItem(`${home}#casas`, t.nav.houses, 'houses')}
       ${navItem(`${home}#localizacao`, t.nav.location, 'location')}
       ${navItem(IS_BUNGALOW ? `${home}#contacto` : ROUTES.contact[lang], t.nav.contact, 'contact')}
     </nav>
@@ -301,7 +304,9 @@ ${body}
 </main>
 <footer class="footer">
   <div class="wrap footer__grid">
-    <a class="footer__brand" href="${home}"><img src="/img/logo.webp" width="361" height="226" alt="${SITE.name}" loading="lazy"></a>
+    <a class="footer__brand" href="${home}">${IS_BUNGALOW
+      ? `<img src="/marca-bungalow/logo-420.webp" srcset="/marca-bungalow/logo-420.webp 420w, /marca-bungalow/logo-840.webp 840w" sizes="320px" width="420" height="238" alt="${SITE.name}" loading="lazy">`
+      : `<img src="/img/logo.webp" width="361" height="226" alt="${SITE.name}" loading="lazy">`}</a>
     <div>
       <h2 class="footer__title">${IS_BUNGALOW ? OTHER.name : t.nav.houses}</h2>
       <ul class="footer__list">
@@ -315,12 +320,12 @@ ${body}
         <li><a href="tel:${SITE.phoneRaw}">${icon('phone', 'icon icon--sm')}${SITE.phone}</a></li>
         <li><a href="${waLink()}" rel="noopener">${brand('whatsapp', 'icon icon--sm')}WhatsApp</a></li>
         <li><a href="mailto:${SITE.email}">${icon('mail', 'icon icon--sm')}${SITE.email}</a></li>
-        <li><a href="${SITE.facebook}" rel="noopener">${brand('facebook', 'icon icon--sm')}Facebook</a></li>
+        ${IS_BUNGALOW ? '' : `<li><a href="${SITE.facebook}" rel="noopener">${brand('facebook', 'icon icon--sm')}Facebook</a></li>`}
       </ul>
     </div>
   </div>
   <div class="wrap footer__bottom"><span>© ${new Date().getFullYear()} ${SITE.name}. ${t.rights}.</span><span class="footer__langs">${footLangs}</span></div>
-  <p class="wrap footer__credit">${t.credit} <a href="${SITE.dev.site}" rel="noopener">${SITE.dev.name}</a>, ${SITE.dev.role} · <a href="${SITE.dev.site}" rel="noopener">${new URL(SITE.dev.site).host}</a> · <a href="mailto:${SITE.dev.email}">${SITE.dev.email}</a> · <a href="${SITE.dev.linkedin}" rel="noopener">LinkedIn</a></p>
+  <p class="wrap footer__credit">${t.credit} <a href="${SITE.dev.site}" rel="noopener">${SITE.dev.name}</a>, ${SITE.dev.role} · <a href="${SITE.dev.site}" rel="noopener">${new URL(SITE.dev.site).host}</a></p>
 </footer>
 
 <nav class="bar" aria-label="${t.book}">
@@ -447,7 +452,8 @@ function homePage(lang) {
     <h2 class="h2">${t.houses}</h2>
   </div>
   <div class="rail rail--3">${PROPERTIES.map((p) => card(p, lang)).join('')}</div>
-</section>`;
+</section>
+${ours(lang)}`;
 
   return layout({
     lang, key: 'home', title: t.seo.homeTitle, description: t.seo.homeDesc, body,
@@ -604,7 +610,7 @@ function business(lang) {
     checkinTime: '16:00',
     checkoutTime: '11:00',
     amenityFeature: all.map((a) => ({ '@type': 'LocationFeatureSpecification', name: T.en.am[a], value: true })),
-    sameAs: [SITE.facebook],
+    sameAs: IS_BUNGALOW ? PROPERTIES.flatMap((p) => [`${p.booking}.html`, p.airbnb, p.expedia].filter(Boolean)) : [SITE.facebook],
   };
 }
 
@@ -639,25 +645,52 @@ function contactList(lang) {
     ${item('phone', c.phone, SITE.phone, `tel:${SITE.phoneRaw}`)}
     ${item('whatsapp', 'WhatsApp', SITE.phone, waLink())}
     ${item('mail', c.email, SITE.email, `mailto:${SITE.email}`)}
-    ${item('facebook', 'Facebook', 'Casa da Petisqueira', SITE.facebook)}
+    ${IS_BUNGALOW ? '' : item('facebook', 'Facebook', 'Casa da Petisqueira', SITE.facebook)}
   </div>`;
 }
 
-// Distâncias e contactos no fim da página do bungalow (site próprio).
-function standaloneExtra(p, lang) {
-  const t = T[lang];
-  const from = LOCATIONS[p.location].geo.join(',');
+// Locais da Serra com botão de caminho desde o bungalow.
+function spots(lang) {
+  const from = LOCATIONS[SITES.bungalow.location].geo.join(',');
   const dir = (q) => `https://www.google.com/maps/dir/?api=1&origin=${from}&destination=${encodeURIComponent(q)}`;
-  return `<section class="section section--tint" id="serra">
-  <div class="wrap">
-    <h2 class="h2">${REGION.title[lang]}</h2>
-    <ul class="spots">${REGION.places.map((s) => `<li class="spot">
+  return `<ul class="spots">${REGION.places.map((s) => `<li class="spot">
       ${icon(s.icon)}
       <div><h3>${esc(s.name)}</h3><p>${esc(s.t[lang])}</p></div>
-      <a class="spot__go" href="${dir(s.q)}" rel="noopener" aria-label="${t.directions}: ${esc(s.name)}">${brand('gmaps')}</a>
-    </li>`).join('')}</ul>
-    <h2 class="h3 spots__dist">${t.distances}</h2>
-    <div class="dists"><div class="dist">${distList(p.location, lang)}</div></div>
+      <a class="spot__go" href="${dir(s.q)}" rel="noopener" aria-label="${T[lang].directions}: ${esc(s.name)}">${brand('gmaps')}</a>
+    </li>`).join('')}</ul>`;
+}
+
+// O outro sítio do mesmo dono (sítios diferentes, sem relação; só uma recomendação discreta).
+function ours(lang) {
+  const x = EXTRA[lang];
+  const logo = IS_BUNGALOW
+    ? '<img src="/img/logo.webp" width="361" height="226" alt="" loading="lazy">'
+    : '<img src="/marca-bungalow/logo-420.webp" width="420" height="238" alt="" loading="lazy">';
+  const href = otherSiteHref(lang);
+  return `<section class="section"><div class="wrap">
+  <a class="ours" href="${href}" rel="noopener">
+    ${logo}
+    <span><small>${x.ours}</small><b>${esc(OTHER.name)}</b><span>${IS_BUNGALOW ? x.farCasas : x.farBungalow}</span></span>
+    ${icon('arrow')}
+  </a>
+</div></section>`;
+}
+
+// Fim da página do bungalow: prévia da Serra (fotos que levam à página), distâncias, contactos.
+function standaloneExtra(p, lang) {
+  const t = T[lang], x = EXTRA[lang];
+  const ph = REGION.photos.slice(0, 5);
+  return `<section class="section section--tint" id="serra">
+  <div class="wrap">
+    <div class="sec-head"><h2 class="h2">Serra da Estrela</h2><p>${icon('mountain', 'icon icon--sm')}${x.from}</p></div>
+    <a class="teaser" href="${ROUTES.serra[lang]}">
+      ${ph.map((f, i) => `<span class="teaser__item">${img('serra', f.n, { alt: `${f.place}, Serra da Estrela`, sizes: i ? '(min-width: 900px) 18vw, 33vw' : '(min-width: 900px) 40vw, 100vw' })}</span>`).join('')}
+      <span class="btn btn--glass teaser__all">${icon('grid', 'icon icon--sm')}${x.see} →</span>
+    </a>
+    <div class="where where--serra">
+      ${spots(lang)}
+      <div class="dist"><h3 class="dist__title">${t.distances}</h3>${distList(p.location, lang)}</div>
+    </div>
   </div>
 </section>
 <section class="section" id="contacto">
@@ -665,7 +698,84 @@ function standaloneExtra(p, lang) {
     <h2 class="h2">${t.contact.title}</h2>
     ${contactList(lang)}
   </div>
-</section>`;
+</section>
+${ours(lang)}`;
+}
+
+// Página "Serra da Estrela" (só no site do bungalow): galeria em mosaico, locais e reserva.
+function serraPage(lang) {
+  const t = T[lang], x = EXTRA[lang], p = PROPERTIES[0];
+  const photos = REGION.photos;
+  const alt = (f) => `${f.place}, Serra da Estrela`;
+  const gallery = photos.map((f) => ({ src: imgPath('serra', f.n, 1920), srcset: srcsetOf('serra', f.n) }));
+  // Padrão de tamanhos que se repete: dá um mosaico vivo sem buracos (grid dense).
+  const shape = (i) => ['big', '', '', 'wide', '', 'tall', '', '', 'wide', ''][i % 10];
+  const body = `
+<section class="hero hero--serra">
+  ${img('serra', photos[0].n, { alt: alt(photos[0]), sizes: HERO_SIZES, eager: true, cls: 'hero__img' })}
+  <div class="wrap hero__content">
+    <h1 class="hero__title">Serra da Estrela</h1>
+    <p class="hero__text">${icon('mountain', 'icon icon--sm')} ${x.from}</p>
+    ${bookBtn(lang, t.book, 'btn btn--primary btn--lg')}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap gallery" data-gallery='${JSON.stringify(gallery)}'>
+    <h2 class="sr-only">${x.see}</h2>
+    <div class="mosaic-serra">
+      ${photos.slice(1).map((f, i) => `<button class="ms ${shape(i) ? `ms--${shape(i)}` : ''}" data-open="${i + 1}">${img('serra', f.n, { alt: alt(f), sizes: '(min-width: 900px) 33vw, 50vw' })}<span>${esc(f.place)}</span></button>`).join('')}
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="wrap">
+    <h2 class="h2">${x.places}</h2>
+    ${spots(lang)}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap cta">
+    <img src="/marca-bungalow/logo-420.webp" srcset="/marca-bungalow/logo-420.webp 420w, /marca-bungalow/logo-840.webp 840w" sizes="260px" width="420" height="238" alt="${SITE.name}" loading="lazy">
+    <div class="cta__actions">
+      ${bookBtn(lang, t.book, 'btn btn--primary btn--lg')}
+      <a class="btn btn--line btn--lg" href="${waLink(t.waText(p.name))}" rel="noopener">${brand('whatsapp', 'icon icon--sm')}WhatsApp</a>
+    </div>
+    <details class="credits"><summary>${x.credits}: Wikimedia Commons</summary>
+      <ul>${photos.map((f) => `<li>${esc(f.place)}: <a href="${f.page}" rel="noopener">${esc(f.author)}</a>, <a href="${f.licUrl}" rel="noopener license">${esc(f.license)}</a></li>`).join('')}</ul>
+    </details>
+  </div>
+</section>
+
+<dialog class="lightbox" aria-label="Serra da Estrela">
+  <img class="lightbox__img" alt="">
+  <p class="lightbox__count"></p>
+  <button class="lightbox__btn lightbox__close" aria-label="${t.lightbox.close}">${icon('close')}</button>
+  <button class="lightbox__btn lightbox__prev" aria-label="${t.lightbox.prev}">‹</button>
+  <button class="lightbox__btn lightbox__next" aria-label="${t.lightbox.next}">›</button>
+</dialog>`;
+
+  const url = SITE.url + ROUTES.serra[lang];
+  return layout({
+    lang, key: 'serra', title: x.serraTitle, description: x.serraDesc, body,
+    image: imgPath('serra', photos[0].n, 1920),
+    preload: `<link rel="preload" as="image" imagesrcset="${srcsetOf('serra', photos[0].n)}" imagesizes="${HERO_SIZES}" fetchpriority="high">`,
+    jsonld: {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebPage', '@id': url, url, name: x.serraTitle, description: x.serraDesc, inLanguage: t.htmlLang,
+          about: { '@type': 'Place', name: 'Serra da Estrela', geo: { '@type': 'GeoCoordinates', latitude: 40.3217, longitude: -7.6114 } },
+          isPartOf: { '@id': `${SITE.url}/#business` } },
+        ...REGION.places.map((s) => ({ '@type': 'TouristAttraction', name: s.name, description: s.t[lang], hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.q)}` })),
+        { '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: SITE.name, item: SITE.url + ROUTES.home[lang] },
+          { '@type': 'ListItem', position: 2, name: 'Serra da Estrela', item: url },
+        ] },
+      ],
+    },
+  });
 }
 
 function contactPage(lang) {
@@ -722,7 +832,7 @@ function copyStatic() {
   const skipVideos = skip.filter((p) => p.video).map((p) => join(STATIC, 'video', p.video));
   cpSync(STATIC, DIST, {
     recursive: true,
-    filter: (src) => !skipDirs.some((d) => src === d || src.startsWith(d + '/')) && !skipVideos.some((v) => src.startsWith(v + '.')),
+    filter: (src) => (IS_BUNGALOW || !src.startsWith(join(STATIC, 'img', 'serra'))) && !skipDirs.some((d) => src === d || src.startsWith(d + '/')) && !skipVideos.some((v) => src.startsWith(v + '.')),
   });
 }
 
@@ -731,12 +841,15 @@ function buildSite(key) {
   rmSync(DIST, { recursive: true, force: true });
   mkdirSync(DIST, { recursive: true });
   copyStatic();
+  // O bungalow tem os seus próprios ícones (monograma EB).
+  if (IS_BUNGALOW) for (const f of ['favicon.ico', 'favicon-192.png', 'apple-touch-icon.png']) cpSync(join(STATIC, 'marca-bungalow', f), join(DIST, f));
   write('assets/styles.css', css);
   write('assets/main.js', js);
 
   for (const lang of LANGS) {
     if (IS_BUNGALOW) {
       write(ROUTES.home[lang], propertyPage(PROPERTIES[0], lang, { standalone: true }));
+      write(ROUTES.serra[lang], serraPage(lang));
       continue;
     }
     write(ROUTES.home[lang], homePage(lang));
@@ -749,14 +862,22 @@ function buildSite(key) {
   for (const [from, to] of Object.entries(redirects)) write(from, redirectPage(to));
   write('404.html', notFoundPage());
 
+  // Fotos de cada página no sitemap (pesquisa de imagens do Google).
+  const photosOf = (k) => {
+    const p = PROPERTIES.find((x) => x.id === k) ?? (k === 'home' && IS_BUNGALOW ? PROPERTIES[0] : null);
+    if (p) return Array.from({ length: photoCount(p.id) }, (_, i) => imgPath(p.id, i + 1, 1920));
+    if (k === 'serra') return REGION.photos.map((f) => imgPath('serra', f.n, 1920));
+    return k === 'home' ? [imgPath(HERO[0], HERO[1], 1920)] : [];
+  };
+  const images = (k) => photosOf(k).map((u) => `<image:image><image:loc>${SITE.url}${u}</image:loc></image:image>`).join('');
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${Object.keys(ROUTES).flatMap((k) => LANGS.map((l) => `  <url><loc>${SITE.url}${ROUTES[k][l]}</loc>${LANGS.map((a) => `<xhtml:link rel="alternate" hreflang="${T[a].htmlLang}" href="${SITE.url}${ROUTES[k][a]}"/>`).join('')}<xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${ROUTES[k].en}"/><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod></url>`)).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${Object.keys(ROUTES).flatMap((k) => LANGS.map((l) => `  <url><loc>${SITE.url}${ROUTES[k][l]}</loc>${LANGS.map((a) => `<xhtml:link rel="alternate" hreflang="${T[a].htmlLang}" href="${SITE.url}${ROUTES[k][a]}"/>`).join('')}<xhtml:link rel="alternate" hreflang="x-default" href="${SITE.url}${ROUTES[k].en}"/><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>${images(k)}</url>`)).join('\n')}
 </urlset>
 `);
   write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE.url}/sitemap.xml\n`);
   write('.nojekyll', '');
-  write('site.webmanifest', JSON.stringify({ name: SITE.name, short_name: SITE.name, start_url: '/', display: 'browser', background_color: '#faf7f3', theme_color: '#7d2632', icons: [{ src: '/favicon-192.png', sizes: '192x192', type: 'image/png' }] }));
+  write('site.webmanifest', JSON.stringify({ name: SITE.name, short_name: IS_BUNGALOW ? 'Eco Bungalow' : SITE.name, start_url: '/', display: 'browser', background_color: IS_BUNGALOW ? '#f3eadb' : '#faf7f3', theme_color: IS_BUNGALOW ? '#2f4a37' : '#7d2632', icons: [{ src: '/favicon-192.png', sizes: '192x192', type: 'image/png' }] }));
   if (CFG.cname !== false) write('CNAME', new URL(SITE.url).hostname + '\n');
 
   console.log(`✓ ${CFG.out}/: ${urls.length} páginas + ${Object.keys(redirects).length} redirecionamentos`);

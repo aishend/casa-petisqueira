@@ -236,7 +236,7 @@ function calendar(form) {
       apply();
       paint();
       // Escolhida a saída, fecha sozinho.
-      setTimeout(() => dlg.close(), 700);
+      setTimeout(() => dlg.close(), 250);
       return;
     }
     // Nova chegada. Se a saída antiga ainda servir, mantém-se; senão escolhe-se a seguir.
@@ -366,5 +366,36 @@ if (gallery && box) {
     const dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
     startX = null;
+  });
+}
+
+// Computador (rato, sem toque): carregar em "Ligar" mostra o número num balão, em vez de abrir uma app de chamadas.
+// Fecha com qualquer clique, scroll, tecla ou mudança de tamanho. No telemóvel o link liga logo.
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  let tip = null;
+  const hide = () => {
+    if (!tip) return;
+    tip.remove(); tip = null;
+    for (const ev of ['scroll', 'wheel', 'keydown', 'resize']) removeEventListener(ev, hide, true);
+  };
+  // +351919425125 → +351 919 425 125
+  const pretty = (raw) => raw.replace(/^(\+351)(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3 $4');
+  document.addEventListener('click', (e) => {
+    if (tip && tip.contains(e.target)) return;
+    hide();
+    const a = e.target.closest('a[href^="tel:"]');
+    if (!a) return;
+    e.preventDefault();
+    tip = document.createElement('div');
+    tip.className = 'tel-tip';
+    tip.setAttribute('role', 'status');
+    tip.innerHTML = `<svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span>${pretty(decodeURIComponent(a.getAttribute('href').slice(4)))}</span>`;
+    document.body.append(tip);
+    const r = a.getBoundingClientRect();
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    const below = r.bottom + 8 + h < innerHeight;
+    tip.style.left = `${Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2))}px`;
+    tip.style.top = `${below ? r.bottom + 8 : r.top - h - 8}px`;
+    for (const ev of ['scroll', 'wheel', 'keydown', 'resize']) addEventListener(ev, hide, { capture: true, passive: true });
   });
 }

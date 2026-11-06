@@ -20,7 +20,7 @@ export const SITE = {
   bookingEngineBase: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room`,
   bookingEngine: (lang) => `https://casa-da-petisqueira.amenitiz.io/${lang}/booking/room#DatesGuests-BE`,
   // Nota no rodapé: quem fez e mantém o site.
-  dev: { name: 'Leandro Moreira', role: 'Software Engineer', site: 'https://leandromoreira.pt', email: 'leandroafonsopm@gmail.com', linkedin: 'https://www.linkedin.com/in/leandro-afonso-m/' },
+  dev: { name: 'Leandro Moreira', role: 'Software Engineer', site: 'https://leandromoreira.pt' },
   bookingCom: (base, lang) => `${base}.${BOOKING_LANG[lang] ?? 'en-gb'}.html`,
 };
 
@@ -61,7 +61,7 @@ export const SITES = {
     url: 'https://bungalowserraestrela.com',
     // Publicado pelo repositório aishend/bungalow-serra-estrela (ver .github/bungalow-deploy.yml).
     live: true,
-    name: 'Bungalow Serra da Estrela',
+    name: 'Eco Bungalow da Serra da Estrela',
     properties: ['bungalow-seia'],
     location: 'seia',
     hero: ['bungalow-seia', 40],
@@ -162,7 +162,7 @@ export const PROPERTIES = [
   {
     id: 'bungalow-seia',
     amenitiz: 140762, // id do quarto no Amenitiz
-    name: 'Bungalow Serra da Estrela',
+    name: 'Eco Bungalow da Serra da Estrela',
     kind: 'bungalow',
     location: 'seia',
     featured: [40, 1, 7, 9, 49],
@@ -212,8 +212,8 @@ export const T = {
       homeDesc: 'Three entire apartments in Rebordosa, Paredes, 25 km from Porto: up to 8 guests, Wi-Fi, air conditioning, equipped kitchen and parking. Book direct.',
       propTitle: (name, rooms) => `${name} — apartment, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: entire apartment in Rebordosa, Paredes, 25 km from Porto. ${rooms}, up to ${n} guests, Wi-Fi, air conditioning, equipped kitchen and parking.`,
-      bunTitle: 'Bungalow in Serra da Estrela, Seia — stay in a pine forest',
-      bunDesc: 'Bungalow for 2 in a pine forest in Folgosa da Madalena, Seia, 30 minutes from Serra da Estrela. Equipped kitchen, Wi-Fi and parking. Book direct.',
+      bunTitle: 'Eco Bungalow in Serra da Estrela, Seia — stay in a pine forest',
+      bunDesc: 'Eco Bungalow for 2 in a pine forest in Folgosa da Madalena, Seia, 30 minutes from Serra da Estrela. Equipped kitchen, Wi-Fi and parking. Book direct.',
     },
     contact: { title: 'Contact', phone: 'Phone', email: 'Email' },
     lightbox: { close: 'Close', prev: 'Previous', next: 'Next' },
@@ -250,8 +250,8 @@ export const T = {
       homeDesc: 'Três apartamentos inteiros em Rebordosa, Paredes, a 25 km do Porto: até 8 pessoas, Wi-Fi, ar condicionado, cozinha equipada e estacionamento. Reserva direta.',
       propTitle: (name, rooms) => `${name} — apartamento, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: apartamento inteiro em Rebordosa, Paredes, a 25 km do Porto. ${rooms}, até ${n} pessoas, Wi-Fi, ar condicionado, cozinha equipada e estacionamento.`,
-      bunTitle: 'Bungalow na Serra da Estrela, Seia — alojamento num pinhal',
-      bunDesc: 'Bungalow para 2 pessoas num pinhal em Folgosa da Madalena, Seia, a 30 minutos da Serra da Estrela. Cozinha equipada, Wi-Fi e estacionamento. Reserva direta.',
+      bunTitle: 'Eco Bungalow na Serra da Estrela, Seia — alojamento num pinhal',
+      bunDesc: 'Eco Bungalow para 2 pessoas num pinhal em Folgosa da Madalena, Seia, a 30 minutos da Serra da Estrela. Cozinha equipada, Wi-Fi e estacionamento. Reserva direta.',
     },
     contact: { title: 'Contacto', phone: 'Telefone', email: 'Email' },
     lightbox: { close: 'Fechar', prev: 'Anterior', next: 'Seguinte' },
@@ -288,8 +288,8 @@ export const T = {
       homeDesc: 'Tres apartamentos completos en Rebordosa, Paredes, a 25 km de Oporto: hasta 8 personas, Wi-Fi, aire acondicionado, cocina equipada y aparcamiento. Reserva directa.',
       propTitle: (name, rooms) => `${name} — apartamento, ${rooms}, Rebordosa, Paredes (Oporto)`,
       propDesc: (name, rooms, n) => `${name}: apartamento completo en Rebordosa, Paredes, a 25 km de Oporto. ${rooms}, hasta ${n} personas, Wi-Fi, aire acondicionado, cocina equipada y aparcamiento.`,
-      bunTitle: 'Bungalow en la Serra da Estrela, Seia — alojamiento en un pinar',
-      bunDesc: 'Bungalow para 2 personas en un pinar en Folgosa da Madalena, Seia, a 30 minutos de la Serra da Estrela. Cocina equipada, Wi-Fi y aparcamiento. Reserva directa.',
+      bunTitle: 'Eco Bungalow en la Serra da Estrela, Seia — alojamiento en un pinar',
+      bunDesc: 'Eco Bungalow para 2 personas en un pinar en Folgosa da Madalena, Seia, a 30 minutos de la Serra da Estrela. Cocina equipada, Wi-Fi y aparcamiento. Reserva directa.',
     },
     contact: { title: 'Contacto', phone: 'Teléfono', email: 'Email' },
     lightbox: { close: 'Cerrar', prev: 'Anterior', next: 'Siguiente' },
@@ -326,8 +326,8 @@ export const T = {
       homeDesc: 'Trois appartements entiers à Rebordosa, Paredes, à 25 km de Porto : jusqu’à 8 personnes, Wi-Fi, climatisation, cuisine équipée et parking. Réservation directe.',
       propTitle: (name, rooms) => `${name} — appartement, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name} : appartement entier à Rebordosa, Paredes, à 25 km de Porto. ${rooms}, jusqu’à ${n} personnes, Wi-Fi, climatisation, cuisine équipée et parking.`,
-      bunTitle: 'Bungalow dans la Serra da Estrela, Seia — séjour dans une pinède',
-      bunDesc: 'Bungalow pour 2 personnes dans une pinède à Folgosa da Madalena, Seia, à 30 minutes de la Serra da Estrela. Cuisine équipée, Wi-Fi et parking. Réservation directe.',
+      bunTitle: 'Eco Bungalow dans la Serra da Estrela, Seia — séjour dans une pinède',
+      bunDesc: 'Eco Bungalow pour 2 personnes dans une pinède à Folgosa da Madalena, Seia, à 30 minutes de la Serra da Estrela. Cuisine équipée, Wi-Fi et parking. Réservation directe.',
     },
     contact: { title: 'Contact', phone: 'Téléphone', email: 'Email' },
     lightbox: { close: 'Fermer', prev: 'Précédente', next: 'Suivante' },
@@ -364,8 +364,8 @@ export const T = {
       homeDesc: 'Drei ganze Ferienwohnungen in Rebordosa, Paredes, 25 km von Porto: bis zu 8 Personen, WLAN, Klimaanlage, ausgestattete Küche und Parkplatz. Direkt buchen.',
       propTitle: (name, rooms) => `${name} — Ferienwohnung, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: ganze Ferienwohnung in Rebordosa, Paredes, 25 km von Porto. ${rooms}, bis zu ${n} Personen, WLAN, Klimaanlage, ausgestattete Küche und Parkplatz.`,
-      bunTitle: 'Bungalow in der Serra da Estrela, Seia — Unterkunft im Kiefernwald',
-      bunDesc: 'Bungalow für 2 Personen im Kiefernwald in Folgosa da Madalena, Seia, 30 Minuten von der Serra da Estrela. Ausgestattete Küche, WLAN und Parkplatz. Direkt buchen.',
+      bunTitle: 'Eco Bungalow in der Serra da Estrela, Seia — Unterkunft im Kiefernwald',
+      bunDesc: 'Eco Bungalow für 2 Personen im Kiefernwald in Folgosa da Madalena, Seia, 30 Minuten von der Serra da Estrela. Ausgestattete Küche, WLAN und Parkplatz. Direkt buchen.',
     },
     contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-Mail' },
     lightbox: { close: 'Schließen', prev: 'Zurück', next: 'Weiter' },
@@ -402,8 +402,8 @@ export const T = {
       homeDesc: 'Tre appartamenti interi a Rebordosa, Paredes, a 25 km da Porto: fino a 8 persone, Wi-Fi, aria condizionata, cucina attrezzata e parcheggio. Prenotazione diretta.',
       propTitle: (name, rooms) => `${name} — appartamento, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: appartamento intero a Rebordosa, Paredes, a 25 km da Porto. ${rooms}, fino a ${n} persone, Wi-Fi, aria condizionata, cucina attrezzata e parcheggio.`,
-      bunTitle: 'Bungalow nella Serra da Estrela, Seia — alloggio in una pineta',
-      bunDesc: 'Bungalow per 2 persone in una pineta a Folgosa da Madalena, Seia, a 30 minuti dalla Serra da Estrela. Cucina attrezzata, Wi-Fi e parcheggio. Prenotazione diretta.',
+      bunTitle: 'Eco Bungalow nella Serra da Estrela, Seia — alloggio in una pineta',
+      bunDesc: 'Eco Bungalow per 2 persone in una pineta a Folgosa da Madalena, Seia, a 30 minuti dalla Serra da Estrela. Cucina attrezzata, Wi-Fi e parcheggio. Prenotazione diretta.',
     },
     contact: { title: 'Contatti', phone: 'Telefono', email: 'Email' },
     lightbox: { close: 'Chiudi', prev: 'Precedente', next: 'Successiva' },
@@ -440,8 +440,8 @@ export const T = {
       homeDesc: 'Drie volledige appartementen in Rebordosa, Paredes, op 25 km van Porto: tot 8 personen, wifi, airconditioning, uitgeruste keuken en parkeren. Direct boeken.',
       propTitle: (name, rooms) => `${name} — appartement, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: volledig appartement in Rebordosa, Paredes, op 25 km van Porto. ${rooms}, tot ${n} personen, wifi, airconditioning, uitgeruste keuken en parkeren.`,
-      bunTitle: 'Bungalow in de Serra da Estrela, Seia — verblijf in een dennenbos',
-      bunDesc: 'Bungalow voor 2 personen in een dennenbos in Folgosa da Madalena, Seia, op 30 minuten van de Serra da Estrela. Uitgeruste keuken, wifi en parkeren. Direct boeken.',
+      bunTitle: 'Eco Bungalow in de Serra da Estrela, Seia — verblijf in een dennenbos',
+      bunDesc: 'Eco Bungalow voor 2 personen in een dennenbos in Folgosa da Madalena, Seia, op 30 minuten van de Serra da Estrela. Uitgeruste keuken, wifi en parkeren. Direct boeken.',
     },
     contact: { title: 'Contact', phone: 'Telefoon', email: 'E-mail' },
     lightbox: { close: 'Sluiten', prev: 'Vorige', next: 'Volgende' },
@@ -478,8 +478,8 @@ export const T = {
       homeDesc: 'Trzy całe apartamenty w Rebordosa, Paredes, 25 km od Porto: do 8 osób, Wi-Fi, klimatyzacja, wyposażona kuchnia i parking. Rezerwacja bezpośrednia.',
       propTitle: (name, rooms) => `${name} — apartament, ${rooms}, Rebordosa, Paredes (Porto)`,
       propDesc: (name, rooms, n) => `${name}: cały apartament w Rebordosa, Paredes, 25 km od Porto. ${rooms}, do ${n} osób, Wi-Fi, klimatyzacja, wyposażona kuchnia i parking.`,
-      bunTitle: 'Bungalow w Serra da Estrela, Seia — nocleg w lesie sosnowym',
-      bunDesc: 'Bungalow dla 2 osób w lesie sosnowym w Folgosa da Madalena, Seia, 30 minut od Serra da Estrela. Wyposażona kuchnia, Wi-Fi i parking. Rezerwacja bezpośrednia.',
+      bunTitle: 'Eco Bungalow w Serra da Estrela, Seia — nocleg w lesie sosnowym',
+      bunDesc: 'Eco Bungalow dla 2 osób w lesie sosnowym w Folgosa da Madalena, Seia, 30 minut od Serra da Estrela. Wyposażona kuchnia, Wi-Fi i parking. Rezerwacja bezpośrednia.',
     },
     contact: { title: 'Kontakt', phone: 'Telefon', email: 'E-mail' },
     lightbox: { close: 'Zamknij', prev: 'Poprzednie', next: 'Następne' },
@@ -490,7 +490,11 @@ export const T = {
 
 // O que visitar perto do bungalow (site do bungalow). q = pesquisa no Google Maps; icon = ícone em build.mjs.
 // Só factos conhecidos; as distâncias e o caminho vêm do Google Maps (botão "Como chegar").
+// Fotos da Serra (Wikimedia Commons, licenças livres): geradas por um script, com autor e licença para os créditos.
+import SERRA_PHOTOS from './serra-photos.json' with { type: 'json' };
+
 export const REGION = {
+  photos: SERRA_PHOTOS,
   title: { en: 'Serra da Estrela nearby', pt: 'Serra da Estrela, aqui perto', es: 'Serra da Estrela, cerca', fr: 'La Serra da Estrela, tout près', de: 'Serra da Estrela in der Nähe', it: 'Serra da Estrela, qui vicino', nl: 'Serra da Estrela in de buurt', pl: 'Serra da Estrela w pobliżu' },
   places: [
     { name: 'Torre', q: 'Torre, Serra da Estrela', icon: 'mountain', t: {
@@ -508,4 +512,17 @@ export const REGION = {
     { name: 'Praia Fluvial de Loriga', q: 'Praia Fluvial de Loriga', icon: 'water', t: {
       en: 'River pool in the mountains, for summer.', pt: 'Praia fluvial na montanha, para o verão.', es: 'Playa fluvial en la montaña, para el verano.', fr: 'Plage fluviale en montagne, pour l’été.', de: 'Flussbad in den Bergen, für den Sommer.', it: 'Spiaggia fluviale in montagna, per l’estate.', nl: 'Rivierstrand in de bergen, voor de zomer.', pl: 'Kąpielisko rzeczne w górach, na lato.' } },
   ],
+};
+
+// Textos curtos da página Serra da Estrela e do bloco que liga os dois sites (mesmo dono, sítios diferentes).
+// ours = "também nosso"; far = o que é o outro sítio, em poucas palavras.
+export const EXTRA = {
+  en: { from: '30 min from the bungalow', see: 'Serra da Estrela photos', places: 'Places to visit', credits: 'Photos', ours: 'Also ours', farBungalow: 'Pine-forest bungalow in Seia, Serra da Estrela', farCasas: '3 apartments in Rebordosa, 25 km from Porto', serraTitle: 'Serra da Estrela: what to see near the Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, the Zêzere glacial valley and more, 30 minutes from the Eco Bungalow in Seia. Photos and directions.' },
+  pt: { from: 'A 30 min do bungalow', see: 'Fotos da Serra da Estrela', places: 'O que visitar', credits: 'Fotos', ours: 'Também nosso', farBungalow: 'Bungalow num pinhal em Seia, Serra da Estrela', farCasas: '3 apartamentos em Rebordosa, a 25 km do Porto', serraTitle: 'Serra da Estrela: o que visitar perto do Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, Vale Glaciar do Zêzere e mais, a 30 minutos do Eco Bungalow em Seia. Fotos e caminhos.' },
+  es: { from: 'A 30 min del bungalow', see: 'Fotos de la Serra da Estrela', places: 'Qué visitar', credits: 'Fotos', ours: 'También nuestro', farBungalow: 'Bungalow en un pinar en Seia, Serra da Estrela', farCasas: '3 apartamentos en Rebordosa, a 25 km de Oporto', serraTitle: 'Serra da Estrela: qué ver cerca del Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, el valle glaciar del Zêzere y más, a 30 minutos del Eco Bungalow en Seia. Fotos y cómo llegar.' },
+  fr: { from: 'À 30 min du bungalow', see: 'Photos de la Serra da Estrela', places: 'À visiter', credits: 'Photos', ours: 'Chez nous aussi', farBungalow: 'Bungalow dans une pinède à Seia, Serra da Estrela', farCasas: '3 appartements à Rebordosa, à 25 km de Porto', serraTitle: 'Serra da Estrela : que voir près de l’Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, la vallée glaciaire du Zêzere et plus, à 30 minutes de l’Eco Bungalow à Seia. Photos et itinéraires.' },
+  de: { from: '30 Min. vom Bungalow', see: 'Fotos der Serra da Estrela', places: 'Ausflugsziele', credits: 'Fotos', ours: 'Auch von uns', farBungalow: 'Bungalow im Kiefernwald in Seia, Serra da Estrela', farCasas: '3 Apartments in Rebordosa, 25 km von Porto', serraTitle: 'Serra da Estrela: Ausflugsziele beim Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, das Gletschertal des Zêzere und mehr, 30 Minuten vom Eco Bungalow in Seia. Fotos und Routen.' },
+  it: { from: 'A 30 min dal bungalow', see: 'Foto della Serra da Estrela', places: 'Cosa visitare', credits: 'Foto', ours: 'Anche nostro', farBungalow: 'Bungalow in una pineta a Seia, Serra da Estrela', farCasas: '3 appartamenti a Rebordosa, a 25 km da Porto', serraTitle: 'Serra da Estrela: cosa vedere vicino all’Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, la valle glaciale dello Zêzere e altro, a 30 minuti dall’Eco Bungalow a Seia. Foto e indicazioni.' },
+  nl: { from: '30 min van de bungalow', see: 'Foto’s van de Serra da Estrela', places: 'Wat te bezoeken', credits: 'Foto’s', ours: 'Ook van ons', farBungalow: 'Bungalow in een dennenbos in Seia, Serra da Estrela', farCasas: '3 appartementen in Rebordosa, 25 km van Porto', serraTitle: 'Serra da Estrela: wat te zien bij de Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, het gletsjerdal van de Zêzere en meer, 30 minuten van de Eco Bungalow in Seia. Foto’s en routes.' },
+  pl: { from: '30 min od bungalowu', see: 'Zdjęcia Serra da Estrela', places: 'Co zwiedzić', credits: 'Zdjęcia', ours: 'Również nasze', farBungalow: 'Bungalow w sosnowym lesie w Seia, Serra da Estrela', farCasas: '3 apartamenty w Rebordosa, 25 km od Porto', serraTitle: 'Serra da Estrela: co zobaczyć w pobliżu Eco Bungalow, Seia', serraDesc: 'Torre, Lagoa Comprida, Sabugueiro, polodowcowa dolina Zêzere i więcej, 30 minut od Eco Bungalow w Seia. Zdjęcia i dojazd.' },
 };
