@@ -709,7 +709,7 @@ function serraPage(lang) {
   const alt = (f) => `${f.place}, Serra da Estrela`;
   const gallery = photos.map((f) => ({ src: imgPath('serra', f.n, 1920), srcset: srcsetOf('serra', f.n) }));
   // Padrão de tamanhos que se repete: dá um mosaico vivo sem buracos (grid dense).
-  const shape = (i) => ['big', '', '', 'wide', '', 'tall', '', '', 'wide', ''][i % 10];
+  const shape = (i) => ['big', '', '', 'wide', '', '', 'wide', '', '', ''][i % 10];
   const body = `
 <section class="hero hero--serra">
   ${img('serra', photos[0].n, { alt: alt(photos[0]), sizes: HERO_SIZES, eager: true, cls: 'hero__img' })}

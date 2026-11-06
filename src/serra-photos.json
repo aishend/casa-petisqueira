@@ -1,11 +1,11 @@
 [
  {
   "n": 1,
-  "place": "Serra da Estrela",
-  "author": "Bruno Pascoal",
+  "place": "Lagoa Comprida",
+  "author": "Ricardo Rei",
   "license": "CC BY-SA 4.0",
   "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Serra_da_Estrela_-_beams_of_light.jpg"
+  "page": "https://commons.wikimedia.org/wiki/File:Lagoa_Comprida_Gelada.jpg"
  },
  {
   "n": 2,
@@ -49,11 +49,11 @@
  },
  {
   "n": 7,
-  "place": "Lagoa Comprida",
-  "author": "Ricardo Rei",
-  "license": "CC BY-SA 4.0",
-  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Lagoa_Comprida_Gelada.jpg"
+  "place": "Cântaros",
+  "author": "Alvesgaspar",
+  "license": "CC BY-SA 3.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Estrela_Mar%C3%A7o_2010-16a.jpg"
  },
  {
   "n": 8,
@@ -81,11 +81,11 @@
  },
  {
   "n": 11,
-  "place": "Cântaros",
-  "author": "Alvesgaspar",
-  "license": "CC BY-SA 3.0",
-  "licUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Estrela_Mar%C3%A7o_2010-16a.jpg"
+  "place": "Serra da Estrela",
+  "author": "Bruno Pascoal",
+  "license": "CC BY-SA 4.0",
+  "licUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Serra_da_Estrela_-_beams_of_light.jpg"
  },
  {
   "n": 12,
