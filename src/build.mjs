@@ -827,10 +827,23 @@ function bookingPage(lang) {
 }
 
 function notFoundPage() {
+  // Página 404: mostra o texto na língua do visitante e leva-o ao início ao fim de 3 s.
+  // O GitHub Pages continua a responder 404, por isso o Google não indexa estes endereços.
+  const msgs = Object.fromEntries(LANGS.map((l) => [l, { t: T[l].notFound.title, b: T[l].notFound.back, h: ROUTES.home[l] }]));
   const body = `<div class="wrap page page--center">
-  <h1 class="h2">${T.en.notFound.title}</h1>
-  <div class="notfound">${LANGS.map((l) => `<a class="btn btn--line" href="${ROUTES.home[l]}" lang="${T[l].htmlLang}">${flag(l)}${T[l].notFound.back}</a>`).join('')}</div>
-</div>`;
+  <h1 class="h2" id="nf-title">${T.en.notFound.title}</h1>
+  <a class="btn btn--primary" id="nf-go" href="${ROUTES.home.en}">${icon('arrow', 'icon icon--sm')}<span>${T.en.notFound.back}</span></a>
+  <span class="nf-bar" aria-hidden="true"></span>
+  <div class="notfound">${LANGS.map((l) => `<a href="${ROUTES.home[l]}" lang="${T[l].htmlLang}" title="${T[l].langName}">${flag(l)}</a>`).join('')}</div>
+</div>
+<script>
+(function(){var M=${JSON.stringify(msgs)},L=Object.keys(M),p=location.pathname.split('/')[1],l=L.indexOf(p)>=0?p:null;
+try{l=l||localStorage.getItem('lang')}catch(e){}
+if(!l||!M[l]){var n=navigator.languages||[navigator.language||''];for(var i=0;i<n.length&&!l;i++){var c=(n[i]||'').slice(0,2).toLowerCase();if(M[c])l=c}}
+if(!M[l])l='en';var m=M[l];document.documentElement.lang=l;document.getElementById('nf-title').textContent=m.t;
+var g=document.getElementById('nf-go');g.href=m.h;g.querySelector('span').textContent=m.b;document.body.classList.add('nf-run');
+setTimeout(function(){location.replace(m.h)},3000)})();
+</script>`;
   return layout({ lang: 'en', key: null, title: `404 | ${SITE.name}`, description: T.en.notFound.title, body });
 }
 

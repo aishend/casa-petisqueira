@@ -391,8 +391,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .booking-frame iframe { width: 100%; height: calc(100svh - var(--header) - var(--bar)); min-height: 560px; border: 0; }
 @media (min-width: 900px) { .booking-frame iframe { height: calc(100svh - var(--header)); } }
 .booking-alt { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; padding-block: 1.25rem 2.5rem; }
-.notfound { display: grid; gap: .5rem; }
-.notfound .btn { justify-content: flex-start; }
+.page--center #nf-go { justify-self: center; }
+.nf-bar { display: block; justify-self: center; width: 160px; height: 2px; background: var(--line); overflow: hidden; margin-top: -1.25rem; }
+.nf-bar::after { content: ""; display: block; height: 100%; width: 0; background: var(--brand); }
+.nf-run .nf-bar::after { animation: nf 3s linear forwards; }
+@keyframes nf { to { width: 100%; } }
+.notfound { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; }
+.notfound a { display: grid; padding: .25rem; border-radius: var(--radius-sm); }
+.notfound svg, .notfound img { width: 28px; height: auto; }
 
 /* ---------- janela de reservas (Amenitiz) ---------- */
 .sheet {
