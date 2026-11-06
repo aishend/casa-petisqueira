@@ -106,7 +106,7 @@ export const REDIRECTS = {
 // id = pasta em static/img/<id>/ e chave em ROUTES.
 // guests: [pessoas em camas, pessoas em sofás-cama]
 // rooms: cama de cada quarto (double = casal, twin = duas individuais); sofas: sofás-cama na sala.
-// booking / airbnb / expedia: anúncios da casa nessas plataformas (os que faltarem não aparecem).
+// booking / airbnb / expedia / tripcom: anúncios da casa nessas plataformas (os que faltarem não aparecem).
 // amenities: chaves de T[lang].am, pela ordem em que aparecem (as 4 primeiras vão para os cartões).
 export const PROPERTIES = [
   {
@@ -126,6 +126,7 @@ export const PROPERTIES = [
     booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira',
     airbnb: 'https://www.airbnb.com/rooms/52890901',
     expedia: 'https://www.expedia.com/Paredes-Hotels-Casas-Da-Petisqueira-Paredes-Oporto.h99046711.Hotel-Information',
+    tripcom: 'https://www.trip.com/hotels/paredes-hotel-detail-113031891/casas-da-petisqueira-61-paredes-oporto/',
   },
   {
     id: 'casa-88',
@@ -142,6 +143,8 @@ export const PROPERTIES = [
     area: 75,
     amenities: ['wifi', 'ac', 'kitchen', 'parking', 'terrace', 'linen', 'washer', 'dishwasher', 'tv'],
     booking: 'https://www.booking.com/hotel/pt/casa-petisqueira-88-paredes-oporto',
+    expedia: 'https://www.expedia.com/Paredes-Hotels-Casa-Da-Petisqueira-88.h97041508.Hotel-Information',
+    tripcom: 'https://www.trip.com/hotels/paredes-hotel-detail-112947395/casa-da-petisqueira-88-paredes-o-porto',
   },
   {
     id: 'casa-54',
@@ -172,6 +175,7 @@ export const PROPERTIES = [
     bathrooms: 1,
     amenities: ['wifi', 'kitchen', 'parking', 'forest', 'linen', 'tv'],
     booking: 'https://www.booking.com/hotel/pt/eco-bungalow-com-vista-serra-da-estrela-pinhal',
+    expedia: 'https://www.expedia.com/Seia-Hotels-Eco-Bungalow-Vista-Serra-Da-Estrela.h128409174.Hotel-Information',
   },
 ];
 
@@ -497,20 +501,18 @@ export const REGION = {
   photos: SERRA_PHOTOS,
   title: { en: 'Serra da Estrela nearby', pt: 'Serra da Estrela, aqui perto', es: 'Serra da Estrela, cerca', fr: 'La Serra da Estrela, tout près', de: 'Serra da Estrela in der Nähe', it: 'Serra da Estrela, qui vicino', nl: 'Serra da Estrela in de buurt', pl: 'Serra da Estrela w pobliżu' },
   places: [
-    { name: 'Torre', q: 'Torre, Serra da Estrela', icon: 'mountain', t: {
+    { name: 'Torre', q: 'Torre, Serra da Estrela', icon: 'mountain', photo: 2, t: {
       en: 'Highest point in mainland Portugal (1993 m). Snow in winter.', pt: 'Ponto mais alto de Portugal continental (1993 m). Neve no inverno.', es: 'Punto más alto de Portugal continental (1993 m). Nieve en invierno.', fr: 'Point culminant du Portugal continental (1993 m). Neige en hiver.', de: 'Höchster Punkt des portugiesischen Festlands (1993 m). Schnee im Winter.', it: 'Punto più alto del Portogallo continentale (1993 m). Neve in inverno.', nl: 'Hoogste punt van het Portugese vasteland (1993 m). Sneeuw in de winter.', pl: 'Najwyższy punkt Portugalii kontynentalnej (1993 m). Zimą śnieg.' } },
-    { name: 'Sabugueiro', q: 'Sabugueiro, Seia', icon: 'village', t: {
-      en: 'The highest village in Portugal.', pt: 'A aldeia mais alta de Portugal.', es: 'El pueblo más alto de Portugal.', fr: 'Le village le plus haut du Portugal.', de: 'Das höchstgelegene Dorf Portugals.', it: 'Il villaggio più alto del Portogallo.', nl: 'Het hoogste dorp van Portugal.', pl: 'Najwyżej położona wieś w Portugalii.' } },
-    { name: 'Lagoa Comprida', q: 'Lagoa Comprida, Serra da Estrela', icon: 'water', t: {
+    { name: 'Lagoa Comprida', q: 'Lagoa Comprida, Serra da Estrela', icon: 'water', photo: 3, t: {
       en: 'The largest lake in Serra da Estrela.', pt: 'A maior lagoa da Serra da Estrela.', es: 'La mayor laguna de la Serra da Estrela.', fr: 'Le plus grand lac de la Serra da Estrela.', de: 'Der größte See der Serra da Estrela.', it: 'Il lago più grande della Serra da Estrela.', nl: 'Het grootste meer van de Serra da Estrela.', pl: 'Największe jezioro Serra da Estrela.' } },
-    { name: 'Vale Glaciar do Zêzere', q: 'Vale Glaciar do Zêzere, Manteigas', icon: 'mountain', t: {
+    { name: 'Vale Glaciar do Zêzere', q: 'Vale Glaciar do Zêzere, Manteigas', icon: 'mountain', photo: 4, t: {
       en: 'U-shaped glacial valley between Torre and Manteigas.', pt: 'Vale glaciar em forma de U, entre a Torre e Manteigas.', es: 'Valle glaciar en forma de U, entre la Torre y Manteigas.', fr: 'Vallée glaciaire en U, entre la Torre et Manteigas.', de: 'U-förmiges Gletschertal zwischen Torre und Manteigas.', it: 'Valle glaciale a U, tra la Torre e Manteigas.', nl: 'U-vormig gletsjerdal tussen Torre en Manteigas.', pl: 'Polodowcowa dolina w kształcie litery U między Torre a Manteigas.' } },
-    { name: 'CISE', q: 'CISE Centro de Interpretação da Serra da Estrela, Seia', icon: 'museum', t: {
-      en: 'Serra da Estrela Interpretation Centre, in Seia.', pt: 'Centro de Interpretação da Serra da Estrela, em Seia.', es: 'Centro de Interpretación de la Serra da Estrela, en Seia.', fr: 'Centre d’interprétation de la Serra da Estrela, à Seia.', de: 'Informationszentrum der Serra da Estrela, in Seia.', it: 'Centro di interpretazione della Serra da Estrela, a Seia.', nl: 'Bezoekerscentrum van de Serra da Estrela, in Seia.', pl: 'Centrum informacji o Serra da Estrela, w Seia.' } },
-    { name: 'Museu do Pão', q: 'Museu do Pão, Seia', icon: 'museum', t: {
-      en: 'Bread museum, in Seia.', pt: 'Museu do pão, em Seia.', es: 'Museo del pan, en Seia.', fr: 'Musée du pain, à Seia.', de: 'Brotmuseum, in Seia.', it: 'Museo del pane, a Seia.', nl: 'Broodmuseum, in Seia.', pl: 'Muzeum chleba, w Seia.' } },
-    { name: 'Praia Fluvial de Loriga', q: 'Praia Fluvial de Loriga', icon: 'water', t: {
-      en: 'River pool in the mountains, for summer.', pt: 'Praia fluvial na montanha, para o verão.', es: 'Playa fluvial en la montaña, para el verano.', fr: 'Plage fluviale en montagne, pour l’été.', de: 'Flussbad in den Bergen, für den Sommer.', it: 'Spiaggia fluviale in montagna, per l’estate.', nl: 'Rivierstrand in de bergen, voor de zomer.', pl: 'Kąpielisko rzeczne w górach, na lato.' } },
+    { name: 'Covão d’Ametade', q: 'Covão d’Ametade, Manteigas', icon: 'mountain', photo: 5, t: {
+      en: 'Birch grove at the source of the Zêzere river.', pt: 'Bosque de bétulas junto à nascente do Zêzere.', es: 'Bosque de abedules junto al nacimiento del Zêzere.', fr: 'Bois de bouleaux à la source du Zêzere.', de: 'Birkenwald an der Quelle des Zêzere.', it: 'Bosco di betulle alla sorgente dello Zêzere.', nl: 'Berkenbos bij de bron van de Zêzere.', pl: 'Brzozowy las przy źródle rzeki Zêzere.' } },
+    { name: 'Cântaro Magro', q: 'Cântaro Magro, Serra da Estrela', icon: 'mountain', photo: 6, t: {
+      en: 'Granite peak above the glacial valley.', pt: 'Pico de granito sobre o vale glaciar.', es: 'Pico de granito sobre el valle glaciar.', fr: 'Pic de granit au-dessus de la vallée glaciaire.', de: 'Granitgipfel über dem Gletschertal.', it: 'Picco di granito sopra la valle glaciale.', nl: 'Granieten piek boven het gletsjerdal.', pl: 'Granitowy szczyt nad doliną polodowcową.' } },
+    { name: 'Loriga', q: 'Loriga, Seia', icon: 'mountain', photo: 8, t: {
+      en: 'Mountain village with terraces and a river beach.', pt: 'Vila de montanha com socalcos e praia fluvial.', es: 'Pueblo de montaña con terrazas y playa fluvial.', fr: 'Village de montagne en terrasses, avec plage fluviale.', de: 'Bergdorf mit Terrassen und Flussbad.', it: 'Paese di montagna con terrazze e spiaggia fluviale.', nl: 'Bergdorp met terrassen en een rivierstrand.', pl: 'Górska wioska z tarasami i kąpieliskiem rzecznym.' } },
   ],
 };
 
