@@ -391,7 +391,7 @@ function card(p, lang) {
   const t = T[lang];
   return `<a class="card" href="${ROUTES[p.id][lang]}">
   <div class="card__img">
-    ${img(p.id, p.featured[0], { alt: `${p.name} — ${t.kind[p.kind]}`, sizes: '(min-width: 900px) 560px, 84vw' })}
+    ${img(p.id, p.featured[0], { alt: `${p.name}, ${EXTRA[lang].stayIn} ${LOCATIONS[p.location].address}`, sizes: '(min-width: 900px) 560px, 84vw' })}
   </div>
   <div class="card__body">
     <h3 class="card__title">${esc(p.name)}</h3>
@@ -487,7 +487,9 @@ function propertyPage(p, lang, { standalone = false } = {}) {
   const t = T[lang];
   const all = photosOf(p);
   const total = all.length;
-  const alt = (n) => `${p.name}, ${t.kind[p.kind].toLowerCase()} — ${LOCATIONS[p.location].address} (${all.indexOf(n) + 1}/${total})`;
+  // Ex.: "Sala — Casa 61, alojamento local em Rebordosa, Paredes, Porto"
+  const x = EXTRA[lang];
+  const alt = (n) => `${p.scenes?.[n] ? `${x.room[p.scenes[n]]} — ` : ''}${p.name}, ${x.stayIn} ${LOCATIONS[p.location].address}`;
   const [main, ...rest] = p.featured;
   const others = PROPERTIES.filter((o) => o.id !== p.id);
   const loc = LOCATIONS[p.location];
