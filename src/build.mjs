@@ -315,6 +315,7 @@ ${body}
         ${IS_BUNGALOW
           ? `<li><a href="${ROUTES.serra[lang]}">Serra da Estrela</a></li><li><a href="${home}#localizacao">${t.nav.location}</a></li><li><a href="${home}#contacto">${t.nav.contact}</a></li>`
           : PROPERTIES.map((p) => `<li><a href="${ROUTES[p.id][lang]}">${esc(p.name)}</a></li>`).join('')}
+        <li><a href="${otherSiteHref(lang)}" rel="noopener">${esc(OTHER.name)} →</a></li>
       </ul>
     </div>
     <div>
@@ -657,7 +658,7 @@ function spots(lang) {
   const from = LOCATIONS[SITES.bungalow.location].geo.join(',');
   const dir = (q) => `https://www.google.com/maps/dir/?api=1&origin=${from}&destination=${encodeURIComponent(q)}`;
   return `<ul class="places">${REGION.places.map((s) => `<li class="place">
-      ${img('serra', s.photo, { alt: `${s.name}, Serra da Estrela`, sizes: '(min-width: 1100px) 360px, (min-width: 640px) 50vw, 100vw' })}
+      ${img('serra', s.photo, { alt: `${s.name}, Serra da Estrela`, sizes: '(min-width: 1100px) 360px, (min-width: 640px) 50vw, 340px' })}
       <div class="place__body">
         <h3>${esc(s.name)}</h3>
         <p>${esc(s.t[lang])}</p>
@@ -688,7 +689,7 @@ function standaloneExtra(p, lang) {
     <div class="sec-head"><h2 class="h2">Serra da Estrela</h2><p>${icon('mountain', 'icon icon--sm')}${x.from}</p></div>
     <div class="where">
       <a class="teaser" href="${ROUTES.serra[lang]}">
-        ${ph.map((f, i) => `<span class="teaser__item">${img('serra', f.n, { alt: `${f.place}, Serra da Estrela`, sizes: i ? '(min-width: 900px) 13vw, 33vw' : '(min-width: 900px) 30vw, 100vw' })}</span>`).join('')}
+        ${ph.map((f, i) => `<span class="teaser__item">${img('serra', f.n, { alt: `${f.place}, Serra da Estrela`, sizes: i ? '(min-width: 900px) 13vw, 120px' : '(min-width: 900px) 30vw, 340px' })}</span>`).join('')}
         <span class="btn btn--glass teaser__all">${icon('grid', 'icon icon--sm')}${x.see} →</span>
       </a>
       <div class="dist"><h3 class="dist__title">${t.distances}</h3>${distList(p.location, lang)}</div>
@@ -729,7 +730,7 @@ function serraPage(lang) {
   <div class="wrap gallery" data-gallery='${JSON.stringify(gallery)}'>
     <h2 class="sr-only">${x.see}</h2>
     <div class="mosaic-serra">
-      ${photos.slice(1).map((f, i) => `<button class="ms ${shape(i) ? `ms--${shape(i)}` : ''}" data-open="${i + 1}">${img('serra', f.n, { alt: alt(f), sizes: '(min-width: 900px) 33vw, 50vw' })}<span>${esc(f.place)}</span></button>`).join('')}
+      ${photos.slice(1).map((f, i) => `<button class="ms ${shape(i) ? `ms--${shape(i)}` : ''}" data-open="${i + 1}">${img('serra', f.n, { alt: alt(f), sizes: shape(i) ? '(min-width: 768px) 50vw, 340px' : '(min-width: 768px) 25vw, 160px' })}<span>${esc(f.place)}</span></button>`).join('')}
     </div>
   </div>
 </section>
