@@ -262,7 +262,7 @@ function layout({ lang, key, title, description, body, image, jsonld, preload = 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${SITE.url}${route}">
+${key ? '' : '<meta name="robots" content="noindex">'}<link rel="canonical" href="${SITE.url}${route}">
 ${alternates}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="${OG_LOCALE[lang]}">
@@ -806,7 +806,7 @@ function contactPage(lang) {
   <h2 class="h2">${t.directions}</h2>
   ${mapBlock(CFG.location, lang)}
 </div>`;
-  return layout({ lang, key: 'contact', title: `${t.contact.title} | ${SITE.name}`, description: t.meta.contact, body });
+  return layout({ lang, key: 'contact', title: `${t.contact.title} · ${SITE.name}, Rebordosa, Paredes`, description: `${t.meta.contact} ${t.hero}`, body });
 }
 
 // Página /reservar: o Amenitiz ocupa o ecrã todo.
@@ -823,7 +823,7 @@ function bookingPage(lang) {
   <a class="btn btn--line" href="${waLink()}" rel="noopener">${brand('whatsapp', 'icon icon--sm')}${t.sheet.help}</a>
   ${PROPERTIES.map((p) => bookingComBtn(p, lang, p.name)).join('')}
 </div>`;
-  return layout({ lang, key: 'booking', title: `${t.book} | ${SITE.name}`, description: t.meta.booking, body });
+  return layout({ lang, key: 'booking', title: `${t.book} · ${SITE.name}, Rebordosa, Paredes`, description: `${t.meta.booking} ${t.hero}`, body });
 }
 
 function notFoundPage() {
