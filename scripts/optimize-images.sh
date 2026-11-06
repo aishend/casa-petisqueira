@@ -31,7 +31,7 @@ export WIDTHS_STR="${WIDTHS[*]}" QUALITY FORCE
 
 for dir in "$SRC"/*/; do
   casa=$(basename "$dir")
-  [[ $casa == videos ]] && continue
+  [[ $casa == videos || $casa == *-marca ]] && continue
   mkdir -p "$OUT/img/$casa"
   find "$dir" -maxdepth 1 -type f \( -iname '*.webp' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) | sort |
     while read -r f; do

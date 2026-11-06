@@ -64,7 +64,7 @@ export const SITES = {
     name: 'Eco Bungalow da Serra da Estrela',
     properties: ['bungalow-seia'],
     location: 'seia',
-    hero: ['bungalow-seia', 40],
+    hero: ['bungalow-seia', 51],
   },
 };
 
@@ -183,11 +183,11 @@ export const PROPERTIES = [
     name: 'Eco Bungalow da Serra da Estrela',
     kind: 'bungalow',
     location: 'seia',
-    featured: [10, 9, 1, 11, 22],
+    featured: [50, 10, 9, 11, 37],
     // Fotos escolhidas, pela ordem da galeria (sem repetidas nem fracas). As outras ficam em static/ mas não aparecem.
-    photos: [10, 9, 1, 11, 22, 2, 5, 6, 8, 15, 17, 19, 4, 12, 21, 39, 37, 41, 45, 46],
+    photos: [50, 10, 9, 1, 11, 51, 2, 5, 6, 8, 15, 17, 19, 4, 12, 21, 52, 37, 41, 45, 46],
     // O que mostra cada foto (para o texto alternativo que o Google lê).
-    scenes: { 10: 'bedroom', 9: 'kitchen', 1: 'kitchen', 11: 'bathroom', 22: 'outside', 2: 'kitchen', 5: 'bedroom', 6: 'bedroom', 8: 'bedroom', 15: 'bedroom', 17: 'bedroom', 19: 'bedroom', 4: 'kitchen', 12: 'bathroom', 21: 'bedroom', 39: 'outside', 37: 'view', 41: 'view', 45: 'area', 46: 'area' },
+    scenes: { 50: 'outside', 51: 'outside', 52: 'outside', 10: 'bedroom', 9: 'kitchen', 1: 'kitchen', 11: 'bathroom', 2: 'kitchen', 5: 'bedroom', 6: 'bedroom', 8: 'bedroom', 15: 'bedroom', 17: 'bedroom', 19: 'bedroom', 4: 'kitchen', 12: 'bathroom', 21: 'bedroom', 39: 'outside', 37: 'view', 41: 'view', 45: 'area', 46: 'area' },
     guests: [2, 0],
     rooms: ['double'],
     sofas: 0,
