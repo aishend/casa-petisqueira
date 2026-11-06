@@ -285,6 +285,7 @@ ${preload}
 ${ROUTES[key] ? `<script>${langScript(lang)}</script>` : ''}
 <script src="${JS_URL}" defer></script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
+${key === 'home' ? `<script type="application/ld+json">${JSON.stringify(website(lang))}</script>` : ''}
 </head>
 <body>
 <a class="skip" href="#main">${t.skip}</a>
@@ -428,6 +429,7 @@ function homePage(lang) {
   <div class="wrap hero__content">
     <h1 class="hero__title">${SITE.name}</h1>
     <p class="hero__text">${t.hero}</p>
+    <p class="hero__note">${icon('check', 'icon icon--xs')}${EXTRA[lang].direct}</p>
   </div>
 </section>
 
@@ -531,6 +533,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
         <a class="btn btn--line" href="tel:${SITE.phoneRaw}">${icon('phone', 'icon icon--sm')}${t.call}</a>
         <a class="btn btn--line" href="${waLink(t.waText(p.name))}" rel="noopener">${brand('whatsapp', 'icon icon--sm')}WhatsApp</a>
       </div>
+      <p class="direct">${icon('check', 'icon icon--xs')}${EXTRA[lang].direct}</p>
       ${platforms(p, lang)}
     </div>
   </aside>
@@ -609,7 +612,8 @@ function business(lang) {
     telephone: SITE.phoneRaw,
     email: SITE.email,
     image: SITE.url + imgPath(...HERO, 1920),
-    logo: `${SITE.url}/img/logo.webp`,
+    logo: SITE.url + (IS_BUNGALOW ? '/marca-bungalow/logo-840.webp' : '/img/logo.webp'),
+    areaServed: IS_BUNGALOW ? ['Seia', 'Serra da Estrela'] : ['Rebordosa', 'Paredes', 'Porto'],
     address: { '@type': 'PostalAddress', ...address, addressCountry: 'PT' },
     geo: { '@type': 'GeoCoordinates', latitude: loc.geo[0], longitude: loc.geo[1] },
     hasMap: loc.maps,
@@ -618,6 +622,11 @@ function business(lang) {
     amenityFeature: all.map((a) => ({ '@type': 'LocationFeatureSpecification', name: T.en.am[a], value: true })),
     sameAs: IS_BUNGALOW ? PROPERTIES.flatMap((p) => [`${p.booking}.html`, p.airbnb, p.expedia].filter(Boolean)) : [SITE.facebook],
   };
+}
+
+// O nome do site, para o Google o mostrar nos resultados ("site oficial").
+function website(lang) {
+  return { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE.url}/#website`, name: SITE.name, url: SITE.url + ROUTES.home[lang], inLanguage: lang, publisher: { '@id': `${SITE.url}/#business` } };
 }
 
 // Cada casa: quartos, camas, lotação, área e comodidades.
