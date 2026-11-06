@@ -368,8 +368,8 @@ ${body}
 
 // Camas nos quartos (as duas individuais contam como 2), sem os sofás-cama.
 const bedCount = (p) => p.rooms.reduce((n, b) => n + (b === 'twin' ? 2 : 1), 0);
-// "T3 · 3 quartos" em português (a tipologia só se usa em Portugal); "3 bedrooms" nas outras línguas.
-const roomsText = (p, lang, sep = ' · ') => (lang === 'pt' && p.typology ? `${p.typology}${sep}` : '') + T[lang].rooms(p.rooms.length);
+// Tipologia + quartos: "T3 · 3 quartos", "T3 · 3 bedrooms".
+const roomsText = (p, lang, sep = ' · ') => (p.typology ? `${p.typology}${sep}` : '') + T[lang].rooms(p.rooms.length);
 
 const guestsLabel = (p) => (p.guests[1] ? `${p.guests[0]} + ${p.guests[1]}` : `${p.guests[0]}`);
 
@@ -378,7 +378,7 @@ function facts(p, lang, { compact = false } = {}) {
   const t = T[lang];
   const items = [
     ['guests', guestsLabel(p), `${guestsLabel(p)} ${t.guests}`],
-    ['bed', lang === 'pt' && p.typology ? p.typology : p.rooms.length, roomsText(p, lang)],
+    ['bed', p.typology ?? p.rooms.length, roomsText(p, lang)],
     !compact && ['double', bedCount(p), EXTRA[lang].beds(bedCount(p))],
     ['bath', p.bathrooms, t.baths(p.bathrooms)],
     p.area && ['area', `${p.area} m²`, `${p.area} m²`],
