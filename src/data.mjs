@@ -54,7 +54,7 @@ export const SITES = {
     name: 'Casa da Petisqueira',
     properties: ['casa-61', 'casa-88', 'casa-54'],
     location: 'porto',
-    hero: ['casa-61', 45],
+    hero: ['casa-88', 16],
   },
   bungalow: {
     out: 'dist-bungalow',
@@ -143,6 +143,7 @@ export const PROPERTIES = [
     area: 75,
     amenities: ['wifi', 'ac', 'kitchen', 'parking', 'terrace', 'linen', 'washer', 'dishwasher', 'tv'],
     booking: 'https://www.booking.com/hotel/pt/casa-petisqueira-88-paredes-oporto',
+    airbnb: 'https://www.airbnb.com/rooms/963762738774530762',
     expedia: 'https://www.expedia.com/Paredes-Hotels-Casa-Da-Petisqueira-88.h97041508.Hotel-Information',
     tripcom: 'https://www.trip.com/hotels/paredes-hotel-detail-112947395/casa-da-petisqueira-88-paredes-o-porto',
   },
@@ -159,7 +160,8 @@ export const PROPERTIES = [
     bathrooms: 1,
     area: 75,
     amenities: ['wifi', 'ac', 'kitchen', 'parking', 'balcony', 'dining', 'linen', 'washer', 'dishwasher', 'tv'],
-    booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira-54-paredes-oporto',
+    booking: 'https://www.booking.com/hotel/pt/casa-da-petisqueira-54-paredes',
+    airbnb: 'https://www.airbnb.com/rooms/1349271731704884962',
     expedia: 'https://www.expedia.com/Paredes-Hotels-Casa-Petisqueira-54-Paredes-Oporto.h112919038.Hotel-Information',
   },
   {

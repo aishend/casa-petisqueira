@@ -424,7 +424,7 @@ function homePage(lang) {
   const t = T[lang];
   const body = `
 <section class="hero">
-  ${img(...HERO, { alt: 'Rebordosa, Paredes', sizes: HERO_SIZES, eager: true, cls: 'hero__img' })}
+  ${img(...HERO, { alt: `${SITE.name}, Rebordosa, Paredes`, sizes: HERO_SIZES, eager: true, cls: 'hero__img' })}
   <div class="wrap hero__content">
     <h1 class="hero__title">${SITE.name}</h1>
     <p class="hero__text">${t.hero}</p>
@@ -504,7 +504,7 @@ function propertyPage(p, lang, { standalone = false } = {}) {
 <div class="gallery" data-gallery='${JSON.stringify(gallery)}'>
   <div class="carousel">
     <div class="carousel__track">
-      ${order.map((n, i) => `<button class="carousel__item" data-open="${i}">${img(p.id, n, { alt: alt(n), sizes: `(min-width: 768px) 1px, ${i === 0 ? '340px' : '100vw'}`, eager: i === 0 })}</button>`).join('')}
+      ${order.map((n, i) => `<button class="carousel__item" data-open="${i}">${img(p.id, n, { alt: alt(n), sizes: `(min-width: 768px) 1px, ${i === 0 ? '340px' : '100vw'}`, eager: i === 0, late: i > 0 })}</button>`).join('')}
     </div>
     <span class="carousel__count" aria-hidden="true"><span data-count>1</span> / ${total}</span>
   </div>
